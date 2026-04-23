@@ -1,0 +1,12 @@
+---
+name: XXX
+id: XXX
+description: XXX
+configVersion: 1
+typeId: SERVICE
+ownerId: XXX
+fields:
+links:
+relationships:
+labels:
+customFields:
