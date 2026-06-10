@@ -1,0 +1,19 @@
+{
+  "id": "SDK-ERR-004",
+  "description": "Base64 decoder with a contentPath absent from the resolved JSON emits VGSShowError(code=1403, type=fieldNotFound). Parallel to FX-ERR-003 but exercises the base64 decoder path.",
+  "input": {
+    "operation": "base64Decode",
+    "contentPath": "nonExistingPath",
+    "json": {
+      "data": "dmdzIHNob3cgdGVzdCBzdHJpbmc="
+    }
+  },
+  "expected": {
+    "outcome": "failure",
+    "error": {
+      "code": 1403,
+      "type": "fieldNotFound",
+      "message": "Field not found in specified path"
+    }
+  }
+}

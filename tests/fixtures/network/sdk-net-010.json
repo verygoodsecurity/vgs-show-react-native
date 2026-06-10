@@ -1,0 +1,48 @@
+{
+  "id": "SDK-NET-010",
+  "description": "Hostname-validation URL builder strips query strings, fragments, paths after the authority, and duplicate trailing slashes from the input hostname before computing the canonical validation URL.",
+  "input": {
+    "operation": "buildHostValidationUrl",
+    "tenantId": "123456",
+    "cases": [
+      {
+        "hostname": "https://www.ios-testing.testhost.io/search?q=test+dosmth&oq=test+dosmth"
+      },
+      {
+        "hostname": "www.ios-testing.testhost.io/search?q=test&obj=123"
+      },
+      {
+        "hostname": "http://www.ios-testing.testhost.io//search?q=test+dosmth&oq=test+dosmth//"
+      },
+      {
+        "hostname": "www.ios-testing.testhost.io/search?q=test+dosmth&oq=test+dosmth"
+      },
+      {
+        "hostname": "http://www.ios-testing.testhost.io/search?q=test+dosmth&oq=test+dosmth///"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "allCases": {
+      "url": "https://js.verygoodvault.com/collect-configs/www.ios-testing.testhost.io__123456.txt"
+    },
+    "perCase": [
+      {
+        "url": "https://js.verygoodvault.com/collect-configs/www.ios-testing.testhost.io__123456.txt"
+      },
+      {
+        "url": "https://js.verygoodvault.com/collect-configs/www.ios-testing.testhost.io__123456.txt"
+      },
+      {
+        "url": "https://js.verygoodvault.com/collect-configs/www.ios-testing.testhost.io__123456.txt"
+      },
+      {
+        "url": "https://js.verygoodvault.com/collect-configs/www.ios-testing.testhost.io__123456.txt"
+      },
+      {
+        "url": "https://js.verygoodvault.com/collect-configs/www.ios-testing.testhost.io__123456.txt"
+      }
+    ]
+  }
+}

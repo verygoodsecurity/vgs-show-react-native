@@ -1,0 +1,40 @@
+{
+  "id": "SDK-CORE-014",
+  "description": "Calling request() with zero subscribers logs one warning but still builds and sends the request and resolves normally for a valid 2xx JSON response.",
+  "input": {
+    "operation": "simulateCoreRequestPipeline",
+    "vgsShow": {
+      "id": "tenant",
+      "environment": "sandbox"
+    },
+    "views": [],
+    "request": {
+      "path": "post"
+    },
+    "response": {
+      "kind": "http",
+      "status": 200,
+      "body": "{}"
+    }
+  },
+  "expected": {
+    "outcome": "success",
+    "promiseState": "resolved",
+    "requestResult": {
+      "code": 200
+    },
+    "requestDispatched": true,
+    "warningLogCount": 1,
+    "decodeAttemptCount": 0,
+    "eventSequence": [
+      "beforeSubmit",
+      "warningNoSubscribers",
+      "buildRequest",
+      "sendRequest",
+      "logSuccessResponse",
+      "rawDecodeSuccess",
+      "submitSuccess",
+      "promiseResolved"
+    ]
+  }
+}

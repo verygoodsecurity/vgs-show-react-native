@@ -1,0 +1,39 @@
+{
+  "id": "SDK-CORE-011",
+  "description": "customHeaders assignments are snapshotted when a request is built: later assignments affect later requests, not already-built request headers.",
+  "input": {
+    "operation": "customHeadersRequestPropagation",
+    "vgsShow": {
+      "id": "tenant",
+      "environment": "sandbox"
+    },
+    "initialHeaders": {
+      "X-Trace": "initial",
+      "X-Stable": "one"
+    },
+    "updatedHeaders": {
+      "X-Trace": "updated",
+      "X-New": "two"
+    },
+    "request": {
+      "path": "post",
+      "payload": {
+        "account": "tok_123"
+      }
+    }
+  },
+  "expected": {
+    "outcome": "success",
+    "firstRequestHeaders": {
+      "X-Trace": "initial",
+      "X-Stable": "one",
+      "Content-Type": "application/json"
+    },
+    "secondRequestHeaders": {
+      "X-Trace": "updated",
+      "X-New": "two",
+      "Content-Type": "application/json"
+    },
+    "firstRequestStillHasInitialHeader": true
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "id": "SDK-TXT-021",
+  "description": "A VGSShowLabel mounted with a vgsShow instance auto-subscribes one internal label view, keeps contentPath current without re-subscribing, routes request results by each label's contentPath, and unsubscribes on unmount.",
+  "input": {
+    "operation": "simulateTextComponentAutoSubscription",
+    "labels": [
+      {
+        "viewId": "cardNumberLabel",
+        "contentPath": "card.number"
+      },
+      {
+        "viewId": "cvvLabel",
+        "contentPath": "card.cvv"
+      }
+    ],
+    "updatedContentPath": {
+      "viewId": "cvvLabel",
+      "contentPath": "card.securityCode"
+    },
+    "response": {
+      "kind": "http",
+      "status": 200,
+      "body": "{\"card\":{\"number\":\"4111111111111111\",\"cvv\":\"123\",\"securityCode\":\"999\"}}"
+    }
+  },
+  "expected": {
+    "outcome": "success",
+    "subscriberCountAfterMount": 2,
+    "subscriberCountAfterContentPathUpdate": 2,
+    "renderedTextByViewId": {
+      "cardNumberLabel": "4111111111111111",
+      "cvvLabel": "999"
+    },
+    "subscriberCountAfterUnmount": 0
+  }
+}

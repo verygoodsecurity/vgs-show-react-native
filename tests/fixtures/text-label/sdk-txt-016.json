@@ -1,0 +1,43 @@
+{
+  "id": "SDK-TXT-016",
+  "description": "Text placeholder visibility follows logical content state: visible before reveal and after clear, hidden when revealed text is present.",
+  "input": {
+    "operation": "simulateTextPlaceholderVisibility",
+    "placeholder": "Card number",
+    "operations": [
+      {
+        "action": "read"
+      },
+      {
+        "action": "reveal",
+        "content": {
+          "kind": "text",
+          "text": "411111"
+        }
+      },
+      {
+        "action": "clear"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "perStep": [
+      {
+        "afterOperation": 1,
+        "state": "idle",
+        "placeholderVisible": true
+      },
+      {
+        "afterOperation": 2,
+        "state": "revealed",
+        "placeholderVisible": false
+      },
+      {
+        "afterOperation": 3,
+        "state": "cleared",
+        "placeholderVisible": true
+      }
+    ]
+  }
+}

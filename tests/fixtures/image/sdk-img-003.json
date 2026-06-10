@@ -1,0 +1,38 @@
+{
+  "id": "SDK-IMG-003",
+  "description": "The image-view model's success paths fire the value-changed callback when raw image bytes are assigned directly or arrive through `handleDecodingResult(.success(.rawData(...)))`.",
+  "input": {
+    "operation": "simulateImageChangeCallbacks",
+    "cases": [
+      {
+        "mode": "modelValueAssignment",
+        "rawDataBase64": "aW1hZ2VEYXRh"
+      },
+      {
+        "mode": "modelHandleSuccess",
+        "rawDataBase64": "aW1hZ2VEYXRh"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "perCase": [
+      {
+        "callbackFired": true,
+        "content": {
+          "kind": "rawData",
+          "dataBase64": "aW1hZ2VEYXRh",
+          "dataUtf8": "imageData"
+        }
+      },
+      {
+        "callbackFired": true,
+        "content": {
+          "kind": "rawData",
+          "dataBase64": "aW1hZ2VEYXRh",
+          "dataUtf8": "imageData"
+        }
+      }
+    ]
+  }
+}

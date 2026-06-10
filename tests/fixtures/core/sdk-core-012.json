@@ -1,0 +1,56 @@
+{
+  "id": "SDK-CORE-012",
+  "description": "A successful request publishes the expected core pipeline events in order: before-submit, network build/send, raw decode, per-view loading/decode, submit success, and Promise resolve.",
+  "input": {
+    "operation": "simulateCoreRequestPipeline",
+    "vgsShow": {
+      "id": "tenant",
+      "environment": "sandbox"
+    },
+    "views": [
+      {
+        "viewId": "label1",
+        "viewKind": "label",
+        "contentPath": "card.token",
+        "decodingContentMode": "text"
+      }
+    ],
+    "request": {
+      "path": "post",
+      "method": "POST"
+    },
+    "response": {
+      "kind": "http",
+      "status": 200,
+      "body": "{\"card\":{\"token\":\"tok_123\"}}"
+    }
+  },
+  "expected": {
+    "outcome": "success",
+    "promiseState": "resolved",
+    "requestResult": {
+      "code": 200
+    },
+    "eventSequence": [
+      "beforeSubmit",
+      "buildRequest",
+      "sendRequest",
+      "logSuccessResponse",
+      "rawDecodeSuccess",
+      "viewLoading:label1",
+      "viewDecodeSuccess:label1",
+      "submitSuccess",
+      "promiseResolved"
+    ],
+    "perView": [
+      {
+        "viewId": "label1",
+        "state": "revealed",
+        "content": {
+          "kind": "text",
+          "text": "tok_123"
+        }
+      }
+    ]
+  }
+}

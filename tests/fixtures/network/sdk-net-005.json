@@ -1,0 +1,56 @@
+{
+  "id": "SDK-NET-005",
+  "description": "Data region validator: accepts non-empty strings containing only [A-Za-z0-9-]; rejects strings with any other character.",
+  "input": {
+    "operation": "isValidDataRegion",
+    "cases": [
+      {
+        "region": "ua-0505"
+      },
+      {
+        "region": "ua0505"
+      },
+      {
+        "region": "ua_0505"
+      },
+      {
+        "region": "ua:0505"
+      },
+      {
+        "region": "ua-0505/verygoodsecurity.com"
+      },
+      {
+        "region": "ua-0505?param=val"
+      },
+      {
+        "region": "ua-0505#val,id=ua-0505&env=1"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "mixed",
+    "perCase": [
+      {
+        "isValid": true
+      },
+      {
+        "isValid": true
+      },
+      {
+        "isValid": false
+      },
+      {
+        "isValid": false
+      },
+      {
+        "isValid": false
+      },
+      {
+        "isValid": false
+      },
+      {
+        "isValid": false
+      }
+    ]
+  }
+}

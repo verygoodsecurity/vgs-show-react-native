@@ -1,0 +1,37 @@
+{
+  "id": "SDK-NET-001",
+  "description": "Constructing VGSShow with environment='sandbox' produces the vault URL 'https://<id>.sandbox.verygoodproxy.com' (or with '-<region>' suffix when a non-empty dataRegion is supplied).",
+  "input": {
+    "operation": "constructVgsShowAndReadBaseUrlHost",
+    "cases": [
+      {
+        "id": "testID",
+        "environment": "sandbox"
+      },
+      {
+        "id": "testID",
+        "environment": "sandbox",
+        "dataRegion": ""
+      },
+      {
+        "id": "testID",
+        "environment": "sandbox",
+        "dataRegion": "ua-0505"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "perCase": [
+      {
+        "baseUrlHost": "testID.sandbox.verygoodproxy.com"
+      },
+      {
+        "baseUrlHost": "testID.sandbox.verygoodproxy.com"
+      },
+      {
+        "baseUrlHost": "testID.sandbox-ua-0505.verygoodproxy.com"
+      }
+    ]
+  }
+}

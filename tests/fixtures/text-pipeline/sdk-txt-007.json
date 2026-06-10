@@ -1,0 +1,182 @@
+{
+  "id": "SDK-TXT-007",
+  "description": "After formatting a card number as `4111-1111-1111-1111`, single secure ranges are applied against the formatted string using inclusive-inclusive indices; invalid ranges are ignored.",
+  "input": {
+    "operation": "applyFormatterThenSecureRange",
+    "rawText": "4111111111111111",
+    "formatter": {
+      "pattern": "(\\d{4})(\\d{4})(\\d{4})(\\d{4})",
+      "template": "$1-$2-$3-$4"
+    },
+    "cases": [
+      {
+        "range": {
+          "start": null,
+          "end": null
+        }
+      },
+      {
+        "range": {
+          "start": null,
+          "end": 3
+        }
+      },
+      {
+        "range": {
+          "start": -1,
+          "end": 5
+        }
+      },
+      {
+        "range": {
+          "start": 0,
+          "end": -1
+        }
+      },
+      {
+        "range": {
+          "start": 5,
+          "end": 4
+        }
+      },
+      {
+        "range": {
+          "start": 0,
+          "end": null
+        }
+      },
+      {
+        "range": {
+          "start": 0,
+          "end": null
+        }
+      },
+      {
+        "range": {
+          "start": 5,
+          "end": 8
+        }
+      },
+      {
+        "range": {
+          "start": 15,
+          "end": 18
+        }
+      },
+      {
+        "range": {
+          "start": 0,
+          "end": 0
+        }
+      },
+      {
+        "range": {
+          "start": 18,
+          "end": null
+        }
+      },
+      {
+        "range": {
+          "start": 0,
+          "end": 100
+        }
+      },
+      {
+        "range": {
+          "start": 0,
+          "end": 100
+        }
+      },
+      {
+        "range": {
+          "start": 1,
+          "end": 1
+        }
+      },
+      {
+        "range": {
+          "start": 10,
+          "end": 18
+        }
+      },
+      {
+        "range": {
+          "start": 4,
+          "end": 14
+        }
+      },
+      {
+        "range": {
+          "start": 100,
+          "end": 15
+        }
+      },
+      {
+        "range": {
+          "start": 3,
+          "end": 3
+        }
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "formattedTextBeforeMask": "4111-1111-1111-1111",
+    "perCase": [
+      {
+        "maskedText": "*******************"
+      },
+      {
+        "maskedText": "****-1111-1111-1111"
+      },
+      {
+        "maskedText": "4111-1111-1111-1111"
+      },
+      {
+        "maskedText": "4111-1111-1111-1111"
+      },
+      {
+        "maskedText": "4111-1111-1111-1111"
+      },
+      {
+        "maskedText": "*******************"
+      },
+      {
+        "maskedText": "*******************"
+      },
+      {
+        "maskedText": "4111-****-1111-1111"
+      },
+      {
+        "maskedText": "4111-1111-1111-****"
+      },
+      {
+        "maskedText": "*111-1111-1111-1111"
+      },
+      {
+        "maskedText": "4111-1111-1111-111*"
+      },
+      {
+        "maskedText": "*******************"
+      },
+      {
+        "maskedText": "*******************"
+      },
+      {
+        "maskedText": "4*11-1111-1111-1111"
+      },
+      {
+        "maskedText": "4111-1111-*********"
+      },
+      {
+        "maskedText": "4111***********1111"
+      },
+      {
+        "maskedText": "4111-1111-1111-1111"
+      },
+      {
+        "maskedText": "411*-1111-1111-1111"
+      }
+    ]
+  }
+}

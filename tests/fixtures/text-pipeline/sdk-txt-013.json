@@ -1,0 +1,17 @@
+{
+  "id": "SDK-TXT-013",
+  "description": "Resetting all formatters removes the formatter effect and the label returns to showing the raw revealed text.",
+  "input": {
+    "operation": "resetAllFormattersAfterFormatting",
+    "rawText": "4111111111111111",
+    "formatter": {
+      "pattern": "(\\d{4})(\\d{4})(\\d{4})(\\d{4})",
+      "template": "$1-$2-$3-$4"
+    }
+  },
+  "expected": {
+    "outcome": "success",
+    "transformedTextBeforeReset": "4111-1111-1111-1111",
+    "transformedTextAfterReset": "4111111111111111"
+  }
+}

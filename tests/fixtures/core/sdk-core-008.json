@@ -1,0 +1,34 @@
+{
+  "id": "SDK-CORE-008",
+  "description": "Unsubscribing a subscribed label removes it once, emits one unsubscribe lifecycle event, and a second unsubscribe of the same instance is a no-op.",
+  "input": {
+    "operation": "runVgsShowSubscriptionSequence",
+    "viewKind": "label",
+    "operations": [
+      {
+        "action": "subscribe",
+        "viewId": "label1"
+      },
+      {
+        "action": "unsubscribe",
+        "viewId": "label1"
+      },
+      {
+        "action": "unsubscribe",
+        "viewId": "label1"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "subscribedLabels": 0,
+    "subscribedViews": 0,
+    "lifecycleEvents": [
+      {
+        "type": "UnsubscribeField",
+        "viewId": "label1",
+        "viewKind": "label"
+      }
+    ]
+  }
+}

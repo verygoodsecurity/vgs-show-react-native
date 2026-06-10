@@ -1,0 +1,65 @@
+{
+  "id": "SDK-PATH-003",
+  "description": "Dot-notation contentPaths resolve at 1, 2, 3, and 4 levels of nesting; each resolves to the string 'VISA'. Each case pairs a key path with the JSON fixture of matching depth from Tests/VGSShowSDKTests/Resources/JSONs/ValidJSONs/validNestedJSON_{1,2,3,4}.json — inlined verbatim below.",
+  "input": {
+    "operation": "resolveJsonPath",
+    "cases": [
+      {
+        "contentPath": "card_type",
+        "json": {
+          "card_type": "VISA"
+        }
+      },
+      {
+        "contentPath": "json.card_type",
+        "json": {
+          "json": {
+            "card_type": "VISA"
+          }
+        }
+      },
+      {
+        "contentPath": "json.card_data.card_type",
+        "json": {
+          "json": {
+            "card_data": {
+              "card_type": "VISA"
+            }
+          }
+        }
+      },
+      {
+        "contentPath": "json.card_data.data.card_type",
+        "json": {
+          "json": {
+            "card_data": {
+              "data": {
+                "card_type": "VISA"
+              },
+              "card_type2": "Mastercard",
+              "card_TYPE": "Mastercard-2"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "allCasesResolveTo": "VISA",
+    "perCase": [
+      {
+        "value": "VISA"
+      },
+      {
+        "value": "VISA"
+      },
+      {
+        "value": "VISA"
+      },
+      {
+        "value": "VISA"
+      }
+    ]
+  }
+}

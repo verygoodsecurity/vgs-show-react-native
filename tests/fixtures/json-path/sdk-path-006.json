@@ -1,0 +1,89 @@
+{
+  "id": "SDK-PATH-006",
+  "description": "Strings containing characters outside [A-Za-z0-9._-] are reported as invalid JSON key paths by the advisory validator. Validation is advisory-only: invalid paths still run through runtime resolution and may produce warnings.",
+  "input": {
+    "operation": "isValidJsonKeyPath",
+    "cases": [
+      {
+        "path": "/card_brand_name"
+      },
+      {
+        "path": "{card_name}"
+      },
+      {
+        "path": "card-brand-name  "
+      },
+      {
+        "path": "  cardBrandName  "
+      },
+      {
+        "path": "card _ type"
+      },
+      {
+        "path": "CARD_BRAND_NAME%"
+      },
+      {
+        "path": "json.card_name>"
+      },
+      {
+        "path": "user_info.CARD_DATA.card-brand-name?"
+      },
+      {
+        "path": "json.  "
+      },
+      {
+        "path": " json"
+      },
+      {
+        "path": "json.  card-name"
+      },
+      {
+        "path": "json.card-name*"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "allInvalid",
+    "allCases": {
+      "isValid": false
+    },
+    "perCase": [
+      {
+        "isValid": false
+      },
+      {
+        "isValid": false
+      },
+      {
+        "isValid": false
+      },
+      {
+        "isValid": false
+      },
+      {
+        "isValid": false
+      },
+      {
+        "isValid": false
+      },
+      {
+        "isValid": false
+      },
+      {
+        "isValid": false
+      },
+      {
+        "isValid": false
+      },
+      {
+        "isValid": false
+      },
+      {
+        "isValid": false
+      },
+      {
+        "isValid": false
+      }
+    ]
+  }
+}

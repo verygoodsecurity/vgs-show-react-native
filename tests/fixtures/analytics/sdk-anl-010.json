@@ -1,0 +1,60 @@
+{
+  "id": "SDK-ANL-010",
+  "description": "Submit analytics reports success after the request succeeds and reports failed with code/message when the request fails.",
+  "input": {
+    "operation": "simulateSubmitAnalytics",
+    "cases": [
+      {
+        "vgsShow": {
+          "id": "tenant"
+        },
+        "views": [
+          {
+            "viewId": "label1",
+            "kind": "label",
+            "contentPath": "card.token"
+          }
+        ],
+        "request": {
+          "path": "post"
+        },
+        "response": {
+          "kind": "http",
+          "status": 200,
+          "body": "{\"card\":{\"token\":\"tok_123\"}}"
+        }
+      },
+      {
+        "vgsShow": {
+          "id": "tenant"
+        },
+        "views": [],
+        "request": {
+          "path": "post"
+        },
+        "response": {
+          "kind": "networkError",
+          "code": -42,
+          "message": "boom"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "perCase": [
+      {
+        "type": "Submit",
+        "status": "success"
+      },
+      {
+        "type": "Submit",
+        "status": "failed",
+        "extraInfo": {
+          "code": -42,
+          "message": "Unexpected response type"
+        }
+      }
+    ]
+  }
+}

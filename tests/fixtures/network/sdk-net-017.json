@@ -1,0 +1,56 @@
+{
+  "id": "SDK-NET-017",
+  "description": "The network layer accepts only uppercase GET, POST, PUT, PATCH, and DELETE method literals.",
+  "input": {
+    "operation": "supportedHttpMethods",
+    "cases": [
+      {
+        "method": "GET"
+      },
+      {
+        "method": "POST"
+      },
+      {
+        "method": "PUT"
+      },
+      {
+        "method": "PATCH"
+      },
+      {
+        "method": "DELETE"
+      },
+      {
+        "method": "get"
+      },
+      {
+        "method": "OPTIONS"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "mixed",
+    "perCase": [
+      {
+        "isSupported": true
+      },
+      {
+        "isSupported": true
+      },
+      {
+        "isSupported": true
+      },
+      {
+        "isSupported": true
+      },
+      {
+        "isSupported": true
+      },
+      {
+        "isSupported": false
+      },
+      {
+        "isSupported": false
+      }
+    ]
+  }
+}

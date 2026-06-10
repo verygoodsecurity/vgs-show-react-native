@@ -1,0 +1,37 @@
+{
+  "id": "SDK-NET-002",
+  "description": "Constructing VGSShow with environment='live' produces the vault URL 'https://<id>.live.verygoodproxy.com' (or with '-<region>' suffix when a non-empty dataRegion is supplied).",
+  "input": {
+    "operation": "constructVgsShowAndReadBaseUrlHost",
+    "cases": [
+      {
+        "id": "testID",
+        "environment": "live"
+      },
+      {
+        "id": "testID",
+        "environment": "live",
+        "dataRegion": ""
+      },
+      {
+        "id": "testID",
+        "environment": "live",
+        "dataRegion": "ua-0505"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "perCase": [
+      {
+        "baseUrlHost": "testID.live.verygoodproxy.com"
+      },
+      {
+        "baseUrlHost": "testID.live.verygoodproxy.com"
+      },
+      {
+        "baseUrlHost": "testID.live-ua-0505.verygoodproxy.com"
+      }
+    ]
+  }
+}

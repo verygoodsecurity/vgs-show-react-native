@@ -1,0 +1,29 @@
+{
+  "id": "SDK-NET-024",
+  "description": "Requests made while custom hostname resolution is pending are queued and flushed in original order after resolution.",
+  "input": {
+    "operation": "simulateHostnameResolutionQueue",
+    "requestIds": [
+      "r1",
+      "r2",
+      "r3"
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "perRequest": [
+      {
+        "requestId": "r1",
+        "dispatchedAfterResolution": true
+      },
+      {
+        "requestId": "r2",
+        "dispatchedAfterResolution": true
+      },
+      {
+        "requestId": "r3",
+        "dispatchedAfterResolution": true
+      }
+    ]
+  }
+}

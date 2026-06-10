@@ -1,0 +1,37 @@
+{
+  "id": "SDK-TXT-023",
+  "description": "copyToClipboard({ format: 'transformed' }) copies only the transformed unmasked value, fires onCopyTextFinish with the format, and emits redacted copy analytics containing only copy_format.",
+  "input": {
+    "operation": "simulateTextComponentCopySideEffects",
+    "viewId": "cardNumberLabel",
+    "contentPath": "card.number",
+    "revealedRawText": "4111111111111111",
+    "formatter": {
+      "pattern": "(\\d{4})(\\d{4})(\\d{4})(\\d{4})",
+      "template": "$1-$2-$3-$4"
+    },
+    "copyFormat": "transformed"
+  },
+  "expected": {
+    "outcome": "success",
+    "clipboardWrites": [
+      "4111-1111-1111-1111"
+    ],
+    "copyCallback": {
+      "fired": true,
+      "format": "transformed",
+      "argsLength": 1
+    },
+    "analytics": {
+      "type": "Copy to clipboard click",
+      "status": "success",
+      "extraInfo": {
+        "copy_format": "transformed"
+      },
+      "extraInfoKeys": [
+        "copy_format"
+      ],
+      "containsCopiedValue": false
+    }
+  }
+}

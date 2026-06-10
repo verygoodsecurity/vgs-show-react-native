@@ -1,0 +1,28 @@
+{
+  "id": "SDK-PDF-001",
+  "description": "Setting `contentPath` on a PDF view stores the provided string and the getter reflects the current model path.",
+  "input": {
+    "operation": "setAndReadPdfContentPath",
+    "cases": [
+      {
+        "mode": "setterRoundTrip",
+        "contentPath": "new.content.path"
+      },
+      {
+        "mode": "getterFromModel",
+        "modelContentPath": "expected.content.path"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "perCase": [
+      {
+        "contentPath": "new.content.path"
+      },
+      {
+        "contentPath": "expected.content.path"
+      }
+    ]
+  }
+}

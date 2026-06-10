@@ -1,0 +1,43 @@
+{
+  "id": "SDK-CORE-004",
+  "description": "Unsubscribing a label that has already been removed is a no-op: the sequence completes without error and `subscribedLabels` remains at zero.",
+  "input": {
+    "operation": "runVgsShowSubscriptionSequence",
+    "viewKind": "label",
+    "operations": [
+      {
+        "action": "subscribe",
+        "viewId": "label1"
+      },
+      {
+        "action": "unsubscribe",
+        "viewId": "label1"
+      },
+      {
+        "action": "unsubscribe",
+        "viewId": "label1"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "perStep": [
+      {
+        "afterOperation": 0,
+        "subscribedLabels": 0
+      },
+      {
+        "afterOperation": 1,
+        "subscribedLabels": 1
+      },
+      {
+        "afterOperation": 2,
+        "subscribedLabels": 0
+      },
+      {
+        "afterOperation": 3,
+        "subscribedLabels": 0
+      }
+    ]
+  }
+}

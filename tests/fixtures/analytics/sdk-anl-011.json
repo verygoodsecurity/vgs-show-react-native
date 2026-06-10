@@ -1,0 +1,51 @@
+{
+  "id": "SDK-ANL-011",
+  "description": "Analytics payloads built from realistic request/copy/render flows do not leak sensitive request payload values, credentials, or revealed content, and they use only allow-listed extraInfo keys.",
+  "input": {
+    "operation": "assertAnalyticsRedaction",
+    "vgsShow": {
+      "id": "tenant",
+      "hostname": "alt.example.com"
+    },
+    "customHeaders": {
+      "Authorization": "Bearer secret.jwt.token"
+    },
+    "views": [
+      {
+        "viewId": "label1",
+        "kind": "label",
+        "contentPath": "card.token"
+      }
+    ],
+    "request": {
+      "path": "post",
+      "payload": {
+        "pan": "4111111111111111",
+        "jwt": "eyJhbGciOiJIUzI1NiJ9.payload.signature"
+      }
+    },
+    "response": {
+      "kind": "http",
+      "status": 200,
+      "body": "{\"card\":{\"token\":\"raw-image-bytes\"}}"
+    },
+    "copyFormat": "raw",
+    "forbiddenValues": [
+      "4111111111111111",
+      "Bearer secret.jwt.token",
+      "eyJhbGciOiJIUzI1NiJ9.payload.signature",
+      "raw-image-bytes"
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "payloadCount": 4,
+    "containsForbiddenValues": false,
+    "allowedKeysOnly": true,
+    "allowedKeys": [
+      "content",
+      "copy_format",
+      "field"
+    ]
+  }
+}

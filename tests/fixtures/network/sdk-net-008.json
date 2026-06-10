@@ -1,0 +1,54 @@
+{
+  "id": "SDK-NET-008",
+  "description": "Hostname-validation URL builder: given any of six accepted forms of the same hostname (with/without scheme, with/without trailing slash), produces the canonical collect-configs URL for that hostname + tenantId.",
+  "input": {
+    "operation": "buildHostValidationUrl",
+    "tenantId": "123456",
+    "cases": [
+      {
+        "hostname": "https://ios-testing.testhost.io"
+      },
+      {
+        "hostname": "ios-testing.testhost.io"
+      },
+      {
+        "hostname": "http://ios-testing.testhost.io"
+      },
+      {
+        "hostname": "https://ios-testing.testhost.io/"
+      },
+      {
+        "hostname": "ios-testing.testhost.io/"
+      },
+      {
+        "hostname": "http://ios-testing.testhost.io/"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "allCases": {
+      "url": "https://js.verygoodvault.com/collect-configs/ios-testing.testhost.io__123456.txt"
+    },
+    "perCase": [
+      {
+        "url": "https://js.verygoodvault.com/collect-configs/ios-testing.testhost.io__123456.txt"
+      },
+      {
+        "url": "https://js.verygoodvault.com/collect-configs/ios-testing.testhost.io__123456.txt"
+      },
+      {
+        "url": "https://js.verygoodvault.com/collect-configs/ios-testing.testhost.io__123456.txt"
+      },
+      {
+        "url": "https://js.verygoodvault.com/collect-configs/ios-testing.testhost.io__123456.txt"
+      },
+      {
+        "url": "https://js.verygoodvault.com/collect-configs/ios-testing.testhost.io__123456.txt"
+      },
+      {
+        "url": "https://js.verygoodvault.com/collect-configs/ios-testing.testhost.io__123456.txt"
+      }
+    ]
+  }
+}

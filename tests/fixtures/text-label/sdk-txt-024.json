@@ -1,0 +1,53 @@
+{
+  "id": "SDK-TXT-024",
+  "description": "onTextChange fires without payload after reveal, formatter change, secure range change, secure symbol change, and formatter reset.",
+  "input": {
+    "operation": "simulateTextComponentTextChangeUpdatePaths",
+    "viewId": "cardNumberLabel",
+    "contentPath": "card.number",
+    "revealedRawText": "4111111111111111",
+    "operations": [
+      {
+        "action": "addTransformationRegex",
+        "formatter": {
+          "pattern": "(\\d{4})(\\d{4})(\\d{4})(\\d{4})",
+          "template": "$1-$2-$3-$4"
+        }
+      },
+      {
+        "action": "setSecureText",
+        "ranges": [
+          {
+            "start": 0,
+            "end": 3
+          }
+        ]
+      },
+      {
+        "action": "setSecureTextSymbol",
+        "value": "X"
+      },
+      {
+        "action": "resetAllFormatters"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "textChangeCount": 5,
+    "callbackArgsLengths": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "displayTextSequence": [
+      "4111111111111111",
+      "4111-1111-1111-1111",
+      "****-1111-1111-1111",
+      "XXXX-1111-1111-1111",
+      "XXXX111111111111"
+    ]
+  }
+}

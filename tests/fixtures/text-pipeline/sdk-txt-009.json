@@ -1,0 +1,102 @@
+{
+  "id": "SDK-TXT-009",
+  "description": "Invalid secure ranges are ignored while valid ranges in the same array still apply against the formatted card number.",
+  "input": {
+    "operation": "applyFormatterThenSecureRangesArray",
+    "rawText": "4111111111111111",
+    "formatter": {
+      "pattern": "(\\d{4})(\\d{4})(\\d{4})(\\d{4})",
+      "template": "$1-$2-$3-$4"
+    },
+    "cases": [
+      {
+        "ranges": [
+          {
+            "start": -10,
+            "end": -3
+          },
+          {
+            "start": -1,
+            "end": 1
+          },
+          {
+            "start": null,
+            "end": -1
+          },
+          {
+            "start": 3,
+            "end": 1
+          }
+        ]
+      },
+      {
+        "ranges": [
+          {
+            "start": 5,
+            "end": 13
+          },
+          {
+            "start": -5,
+            "end": 20
+          }
+        ]
+      },
+      {
+        "ranges": [
+          {
+            "start": 10,
+            "end": 9
+          },
+          {
+            "start": 3,
+            "end": -5
+          },
+          {
+            "start": 0,
+            "end": 1
+          }
+        ]
+      },
+      {
+        "ranges": [
+          {
+            "start": null,
+            "end": null
+          },
+          {
+            "start": -5,
+            "end": 15
+          },
+          {
+            "start": 18,
+            "end": 0
+          }
+        ]
+      },
+      {
+        "ranges": []
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "formattedTextBeforeMask": "4111-1111-1111-1111",
+    "perCase": [
+      {
+        "maskedText": "4111-1111-1111-1111"
+      },
+      {
+        "maskedText": "4111-*********-1111"
+      },
+      {
+        "maskedText": "**11-1111-1111-1111"
+      },
+      {
+        "maskedText": "*******************"
+      },
+      {
+        "maskedText": "4111-1111-1111-1111"
+      }
+    ]
+  }
+}

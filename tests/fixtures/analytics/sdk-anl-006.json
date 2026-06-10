@@ -1,0 +1,18 @@
+{
+  "id": "SDK-ANL-006",
+  "description": "Secure-range analytics only carries the subscribed label's contentPath.",
+  "input": {
+    "operation": "simulateSetSecureTextRangeAnalytics",
+    "contentPath": "card.token"
+  },
+  "expected": {
+    "outcome": "success",
+    "payload": {
+      "type": "SetSecureTextRange",
+      "status": "success",
+      "extraInfo": {
+        "contentPath": "card.token"
+      }
+    }
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "id": "SDK-TXT-010",
+  "description": "For non-emoji non-ASCII revealed strings whose visible character boundaries still align with RN code-unit indexing, the same secure range arrays produce the same masked output pattern as the ASCII card-number cases.",
+  "input": {
+    "operation": "applySecureRangesToRevealedText",
+    "cases": [
+      {
+        "revealedText": "٤١١١-١١١١-١١١١-١١١١",
+        "ranges": [
+          {
+            "start": null,
+            "end": 3
+          },
+          {
+            "start": 5,
+            "end": 13
+          },
+          {
+            "start": 15,
+            "end": null
+          }
+        ]
+      },
+      {
+        "revealedText": "٤١١١-١١١١-١١١١-١١١١",
+        "ranges": [
+          {
+            "start": 5,
+            "end": 13
+          },
+          {
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "revealedText": "考拉睡覺-考拉睡覺-考拉睡覺-考拉睡覺",
+        "ranges": [
+          {
+            "start": null,
+            "end": 3
+          },
+          {
+            "start": 5,
+            "end": 13
+          },
+          {
+            "start": 15,
+            "end": null
+          }
+        ]
+      },
+      {
+        "revealedText": "考拉睡覺-考拉睡覺-考拉睡覺-考拉睡覺",
+        "ranges": [
+          {
+            "start": 5,
+            "end": 13
+          },
+          {
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "revealedText": "@#$%-*()_-:<?/-~!^]",
+        "ranges": [
+          {
+            "start": null,
+            "end": 3
+          },
+          {
+            "start": 5,
+            "end": 13
+          },
+          {
+            "start": 15,
+            "end": null
+          }
+        ]
+      },
+      {
+        "revealedText": "@#$%-*()_-:<?/-~!^]",
+        "ranges": [
+          {
+            "start": 5,
+            "end": 13
+          },
+          {
+            "start": null,
+            "end": null
+          }
+        ]
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "perCase": [
+      {
+        "maskedText": "****-*********-****"
+      },
+      {
+        "maskedText": "*******************"
+      },
+      {
+        "maskedText": "****-*********-****"
+      },
+      {
+        "maskedText": "*******************"
+      },
+      {
+        "maskedText": "****-*********-****"
+      },
+      {
+        "maskedText": "*******************"
+      }
+    ]
+  }
+}

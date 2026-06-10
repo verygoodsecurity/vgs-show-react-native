@@ -1,0 +1,77 @@
+{
+  "id": "SDK-ERR-012",
+  "description": "Every exported error type maps to the stable `VGSSDKError...` key string used by logs and analytics.",
+  "input": {
+    "operation": "errorKeyMapping",
+    "cases": [
+      {
+        "type": "unexpectedResponseType"
+      },
+      {
+        "type": "unexpectedResponseDataFormat"
+      },
+      {
+        "type": "responseIsInvalidJSON"
+      },
+      {
+        "type": "fieldNotFound"
+      },
+      {
+        "type": "invalidJSONPayload"
+      },
+      {
+        "type": "invalidBase64Data"
+      },
+      {
+        "type": "invalidPDFData"
+      },
+      {
+        "type": "invalidImageData"
+      },
+      {
+        "type": "invalidConfigurationURL"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "perCase": [
+      {
+        "type": "unexpectedResponseType",
+        "errorKey": "VGSSDKErrorUnexpectedResponseType"
+      },
+      {
+        "type": "unexpectedResponseDataFormat",
+        "errorKey": "VGSSDKErrorUnexpectedResponseDataFormat"
+      },
+      {
+        "type": "responseIsInvalidJSON",
+        "errorKey": "VGSSDKErrorResponseIsInvalidJSON"
+      },
+      {
+        "type": "fieldNotFound",
+        "errorKey": "VGSSDKErrorFieldNotFound"
+      },
+      {
+        "type": "invalidJSONPayload",
+        "errorKey": "VGSSDKErrorInvalidJSONPayload"
+      },
+      {
+        "type": "invalidBase64Data",
+        "errorKey": "VGSSDKErrorInvalidBase64Data"
+      },
+      {
+        "type": "invalidPDFData",
+        "errorKey": "VGSSDKErrorInvalidPDFData"
+      },
+      {
+        "type": "invalidImageData",
+        "errorKey": "VGSSDKErrorInvalidImageData"
+      },
+      {
+        "type": "invalidConfigurationURL",
+        "errorKey": "VGSSDKErrorInvalidConfigurationURL"
+      }
+    ]
+  }
+}

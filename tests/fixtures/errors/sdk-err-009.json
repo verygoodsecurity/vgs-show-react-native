@@ -1,0 +1,21 @@
+{
+  "id": "SDK-ERR-009",
+  "description": "The error catalog exposes code `1400` / type `unexpectedResponseType` / message `Unexpected response type` for unexpected response-shape failures.",
+  "input": {
+    "operation": "constructVgsShowError",
+    "error": {
+      "code": 1400,
+      "type": "unexpectedResponseType",
+      "message": "Unexpected response type"
+    }
+  },
+  "expected": {
+    "outcome": "success",
+    "error": {
+      "code": 1400,
+      "type": "unexpectedResponseType",
+      "message": "Unexpected response type",
+      "domain": "vgsshow.sdk"
+    }
+  }
+}

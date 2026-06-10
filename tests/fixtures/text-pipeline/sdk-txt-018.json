@@ -1,0 +1,19 @@
+{
+  "id": "SDK-TXT-018",
+  "description": "A multi-character secureTextSymbol replaces each masked character with the full symbol string and emits one warning through the internal pipeline warning seam.",
+  "input": {
+    "operation": "applyMultiCharSecureTextSymbolWarning",
+    "rawText": "411111",
+    "secureTextSymbol": "XX"
+  },
+  "expected": {
+    "outcome": "success",
+    "isSecureText": true,
+    "transformedText": "411111",
+    "displayText": "XXXXXXXXXXXX",
+    "warningCount": 1,
+    "warnings": [
+      "secureTextSymbolLengthGreaterThanOne"
+    ]
+  }
+}

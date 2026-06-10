@@ -1,0 +1,66 @@
+{
+  "id": "SDK-NET-003",
+  "description": "Regional live vault routing supports Collect-compatible live-<region> environments and the dataRegion option.",
+  "input": {
+    "operation": "constructVgsShowAndReadBaseUrlHost",
+    "cases": [
+      {
+        "id": "testID",
+        "environment": "live"
+      },
+      {
+        "id": "testID",
+        "environment": "live-eu1"
+      },
+      {
+        "id": "testID",
+        "environment": "live",
+        "dataRegion": "ua-0505"
+      },
+      {
+        "id": "testID",
+        "environment": "sandbox"
+      },
+      {
+        "id": "testID",
+        "environment": "sandbox",
+        "dataRegion": "ua5"
+      },
+      {
+        "id": "testID",
+        "environment": "LIVE-UA-0505"
+      },
+      {
+        "id": "testID",
+        "environment": "live-eu1",
+        "dataRegion": "ua-0505"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "perCase": [
+      {
+        "baseUrlHost": "testID.live.verygoodproxy.com"
+      },
+      {
+        "baseUrlHost": "testID.live-eu1.verygoodproxy.com"
+      },
+      {
+        "baseUrlHost": "testID.live-ua-0505.verygoodproxy.com"
+      },
+      {
+        "baseUrlHost": "testID.sandbox.verygoodproxy.com"
+      },
+      {
+        "baseUrlHost": "testID.sandbox-ua5.verygoodproxy.com"
+      },
+      {
+        "baseUrlHost": "testID.live-ua-0505.verygoodproxy.com"
+      },
+      {
+        "baseUrlHost": "testID.live-eu1.verygoodproxy.com"
+      }
+    ]
+  }
+}

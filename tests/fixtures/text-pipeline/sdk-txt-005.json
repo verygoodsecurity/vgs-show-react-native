@@ -1,0 +1,54 @@
+{
+  "id": "SDK-TXT-005",
+  "description": "When a formatter is installed, copying `raw` returns the original value while copying `transformed` returns the formatter output; after resetting formatters, transformed copy falls back to the raw value again.",
+  "input": {
+    "operation": "copyFormattedAndResetText",
+    "rawText": "4111111111111111",
+    "formatter": {
+      "pattern": "(\\d{4})(\\d{4})(\\d{4})(\\d{4})",
+      "template": "$1-$2-$3-$4"
+    },
+    "operations": [
+      {
+        "action": "copyToClipboard",
+        "format": "raw"
+      },
+      {
+        "action": "copyToClipboard",
+        "format": "transformed"
+      },
+      {
+        "action": "resetAllFormatters"
+      },
+      {
+        "action": "copyToClipboard",
+        "format": "raw"
+      },
+      {
+        "action": "copyToClipboard",
+        "format": "transformed"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "perStep": [
+      {
+        "afterOperation": 1,
+        "copiedText": "4111111111111111"
+      },
+      {
+        "afterOperation": 2,
+        "copiedText": "4111-1111-1111-1111"
+      },
+      {
+        "afterOperation": 4,
+        "copiedText": "4111111111111111"
+      },
+      {
+        "afterOperation": 5,
+        "copiedText": "4111111111111111"
+      }
+    ]
+  }
+}

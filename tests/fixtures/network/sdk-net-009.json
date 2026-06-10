@@ -1,0 +1,54 @@
+{
+  "id": "SDK-NET-009",
+  "description": "Hostname-validation URL builder preserves the 'www.' prefix when present on the input hostname (the prefix is a valid part of the hostname, not a stripped part).",
+  "input": {
+    "operation": "buildHostValidationUrl",
+    "tenantId": "123456",
+    "cases": [
+      {
+        "hostname": "https://www.ios-testing.testhost.io"
+      },
+      {
+        "hostname": "www.ios-testing.testhost.io"
+      },
+      {
+        "hostname": "http://www.ios-testing.testhost.io"
+      },
+      {
+        "hostname": "https://www.ios-testing.testhost.io/"
+      },
+      {
+        "hostname": "www.ios-testing.testhost.io/"
+      },
+      {
+        "hostname": "http://www.ios-testing.testhost.io/"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "allCases": {
+      "url": "https://js.verygoodvault.com/collect-configs/www.ios-testing.testhost.io__123456.txt"
+    },
+    "perCase": [
+      {
+        "url": "https://js.verygoodvault.com/collect-configs/www.ios-testing.testhost.io__123456.txt"
+      },
+      {
+        "url": "https://js.verygoodvault.com/collect-configs/www.ios-testing.testhost.io__123456.txt"
+      },
+      {
+        "url": "https://js.verygoodvault.com/collect-configs/www.ios-testing.testhost.io__123456.txt"
+      },
+      {
+        "url": "https://js.verygoodvault.com/collect-configs/www.ios-testing.testhost.io__123456.txt"
+      },
+      {
+        "url": "https://js.verygoodvault.com/collect-configs/www.ios-testing.testhost.io__123456.txt"
+      },
+      {
+        "url": "https://js.verygoodvault.com/collect-configs/www.ios-testing.testhost.io__123456.txt"
+      }
+    ]
+  }
+}

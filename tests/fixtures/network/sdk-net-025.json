@@ -1,0 +1,35 @@
+{
+  "id": "SDK-NET-025",
+  "description": "Host URL policy transitions from customResolving to customResolved on successful custom hostname resolution and to customFallbackVault on resolution failure.",
+  "input": {
+    "operation": "transitionHostURLPolicy",
+    "cases": [
+      {
+        "initial": "customResolving",
+        "resolvedUrl": "https://custom.example.com"
+      },
+      {
+        "initial": "customResolving",
+        "resolvedUrl": null
+      },
+      {
+        "initial": "vault",
+        "resolvedUrl": null
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "perCase": [
+      {
+        "policy": "customResolved"
+      },
+      {
+        "policy": "customFallbackVault"
+      },
+      {
+        "policy": "vault"
+      }
+    ]
+  }
+}

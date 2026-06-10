@@ -1,0 +1,21 @@
+{
+  "id": "SDK-ANL-007",
+  "description": "Copy analytics emits only the selected copy format and never the copied value.",
+  "input": {
+    "operation": "simulateCopyAnalytics",
+    "format": "transformed"
+  },
+  "expected": {
+    "outcome": "success",
+    "payload": {
+      "type": "Copy to clipboard click",
+      "status": "success",
+      "extraInfo": {
+        "copy_format": "transformed"
+      }
+    },
+    "extraInfoKeys": [
+      "copy_format"
+    ]
+  }
+}

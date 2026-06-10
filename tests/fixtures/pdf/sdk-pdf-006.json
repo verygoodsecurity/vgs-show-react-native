@@ -1,0 +1,42 @@
+{
+  "id": "SDK-PDF-006",
+  "description": "PDF hasDocument is false before reveal, true after valid document content is present, and false again after clear.",
+  "input": {
+    "operation": "simulatePdfDocumentPresence",
+    "operations": [
+      {
+        "action": "read"
+      },
+      {
+        "action": "reveal",
+        "content": {
+          "kind": "rawData",
+          "dataBase64": "JVBERi0xLjQK"
+        }
+      },
+      {
+        "action": "clear"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "perStep": [
+      {
+        "afterOperation": 1,
+        "state": "idle",
+        "hasDocument": false
+      },
+      {
+        "afterOperation": 2,
+        "state": "revealed",
+        "hasDocument": true
+      },
+      {
+        "afterOperation": 3,
+        "state": "cleared",
+        "hasDocument": false
+      }
+    ]
+  }
+}

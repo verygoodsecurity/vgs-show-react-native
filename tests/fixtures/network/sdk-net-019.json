@@ -1,0 +1,20 @@
+{
+  "id": "SDK-NET-019",
+  "description": "Default request headers include vgs-client metadata and use the RN source identifier show-rnSDK.",
+  "input": {
+    "operation": "buildDefaultHeaders",
+    "metadata": {
+      "sdkVersion": "1.0.0",
+      "platform": "react-native",
+      "analyticsEnabled": true,
+      "sessionId": "session-1"
+    }
+  },
+  "expected": {
+    "outcome": "success",
+    "headers": {
+      "vgs-client": "source=show-rnSDK; sdkVersion=1.0.0; platform=react-native; analytics=true; sessionId=session-1"
+    },
+    "source": "show-rnSDK"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "id": "SDK-NET-020",
+  "description": "Header merge precedence is defaults < SDK customHeaders < payload-specific headers; case-variant collisions are treated case-insensitively and later headers keep their casing.",
+  "input": {
+    "operation": "mergeHeaders",
+    "defaults": {
+      "vgs-client": "default-client",
+      "X-Trace": "default"
+    },
+    "customHeaders": {
+      "VGS-CLIENT": "sdk-client",
+      "x-trace": "sdk"
+    },
+    "payloadHeaders": {
+      "Content-Type": "application/json",
+      "X-Trace": "payload"
+    }
+  },
+  "expected": {
+    "outcome": "success",
+    "headers": {
+      "VGS-CLIENT": "sdk-client",
+      "X-Trace": "payload",
+      "Content-Type": "application/json"
+    }
+  }
+}

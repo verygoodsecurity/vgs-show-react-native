@@ -1,0 +1,16 @@
+{
+  "id": "SDK-ERR-001",
+  "description": "Raw-data decoder on a nil HTTP response body emits VGSShowError(code=1401, type=unexpectedResponseDataFormat).",
+  "input": {
+    "operation": "rawDataToJson",
+    "rawBody": null
+  },
+  "expected": {
+    "outcome": "failure",
+    "error": {
+      "code": 1401,
+      "type": "unexpectedResponseDataFormat",
+      "message": "Unexpected Response Data Format"
+    }
+  }
+}

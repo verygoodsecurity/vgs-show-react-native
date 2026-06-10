@@ -1,0 +1,14 @@
+{
+  "id": "SDK-ANL-013",
+  "description": "Network debug logging stays silent until explicitly enabled, and when enabled it emits the raw body content through the logger seam.",
+  "input": {
+    "operation": "inspectNetworkDebugLogging",
+    "prefix": "response",
+    "body": "sensitive body"
+  },
+  "expected": {
+    "outcome": "success",
+    "entryCount": 1,
+    "firstEntryContainsBody": true
+  }
+}

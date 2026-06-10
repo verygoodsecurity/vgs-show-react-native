@@ -1,0 +1,12 @@
+{
+  "id": "SDK-IMG-001",
+  "description": "Setting `contentPath` on an image view stores the provided string and reading it back returns the same value.",
+  "input": {
+    "operation": "setImageContentPathAndReadBack",
+    "contentPath": "test.image"
+  },
+  "expected": {
+    "outcome": "success",
+    "contentPath": "test.image"
+  }
+}

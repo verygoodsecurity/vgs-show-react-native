@@ -1,0 +1,36 @@
+{
+  "id": "SDK-ANL-008",
+  "description": "Content-rendering analytics distinguishes success vs failed by status while keeping extraInfo limited to the field name.",
+  "input": {
+    "operation": "simulateContentRenderingAnalytics",
+    "cases": [
+      {
+        "field": "image",
+        "status": "success"
+      },
+      {
+        "field": "pdf",
+        "status": "failed"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "perCase": [
+      {
+        "type": "ContentRendering",
+        "status": "success",
+        "extraInfo": {
+          "field": "image"
+        }
+      },
+      {
+        "type": "ContentRendering",
+        "status": "failed",
+        "extraInfo": {
+          "field": "pdf"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "id": "SDK-PATH-007",
+  "description": "Text decoder treats non-string values at a resolved contentPath as fieldNotFound. No implicit coercion is performed for number, boolean, null, object, or array values.",
+  "input": {
+    "operation": "textDecode",
+    "cases": [
+      {
+        "label": "number",
+        "contentPath": "value",
+        "json": {
+          "value": 4111111111111111
+        }
+      },
+      {
+        "label": "boolean",
+        "contentPath": "value",
+        "json": {
+          "value": true
+        }
+      },
+      {
+        "label": "null",
+        "contentPath": "value",
+        "json": {
+          "value": null
+        }
+      },
+      {
+        "label": "object",
+        "contentPath": "value",
+        "json": {
+          "value": {
+            "nested": "text"
+          }
+        }
+      },
+      {
+        "label": "array",
+        "contentPath": "value",
+        "json": {
+          "value": [
+            "text"
+          ]
+        }
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "allFailure",
+    "error": {
+      "code": 1403,
+      "type": "fieldNotFound",
+      "message": "Field not found in specified path"
+    },
+    "perCase": [
+      {
+        "outcome": "failure",
+        "error": {
+          "code": 1403,
+          "type": "fieldNotFound",
+          "message": "Field not found in specified path"
+        }
+      },
+      {
+        "outcome": "failure",
+        "error": {
+          "code": 1403,
+          "type": "fieldNotFound",
+          "message": "Field not found in specified path"
+        }
+      },
+      {
+        "outcome": "failure",
+        "error": {
+          "code": 1403,
+          "type": "fieldNotFound",
+          "message": "Field not found in specified path"
+        }
+      },
+      {
+        "outcome": "failure",
+        "error": {
+          "code": 1403,
+          "type": "fieldNotFound",
+          "message": "Field not found in specified path"
+        }
+      },
+      {
+        "outcome": "failure",
+        "error": {
+          "code": 1403,
+          "type": "fieldNotFound",
+          "message": "Field not found in specified path"
+        }
+      }
+    ]
+  }
+}

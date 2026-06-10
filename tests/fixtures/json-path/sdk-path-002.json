@@ -1,0 +1,19 @@
+{
+  "id": "SDK-PATH-002",
+  "description": "Base64 decoder resolves a contentPath to a base64 string and emits .success(.rawData(<bytes>)). Exercises the resolver-plus-base64-decode positive path.",
+  "input": {
+    "operation": "base64Decode",
+    "contentPath": "data",
+    "json": {
+      "data": "dmdzIHNob3cgdGVzdCBzdHJpbmc="
+    }
+  },
+  "expected": {
+    "outcome": "success",
+    "content": {
+      "kind": "rawData",
+      "dataBase64": "dmdzIHNob3cgdGVzdCBzdHJpbmc=",
+      "dataUtf8": "vgs show test string"
+    }
+  }
+}

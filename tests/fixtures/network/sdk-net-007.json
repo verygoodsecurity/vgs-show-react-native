@@ -1,0 +1,16 @@
+{
+  "id": "SDK-NET-007",
+  "description": "A JSON payload injects 'Content-Type: application/json' into the outgoing request's additional headers.",
+  "input": {
+    "operation": "encodeJsonPayloadAndReadAdditionalHeaders",
+    "payload": {
+      "key": "value"
+    }
+  },
+  "expected": {
+    "outcome": "success",
+    "additionalHeaders": {
+      "Content-Type": "application/json"
+    }
+  }
+}

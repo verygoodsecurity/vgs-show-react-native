@@ -1,0 +1,12 @@
+{
+  "id": "SDK-TXT-003",
+  "description": "Calling `clearText()` after reveal removes the stored revealed text and leaves the label with no revealed content.",
+  "input": {
+    "operation": "setLabelTextAndClearText",
+    "revealedRawText": "123"
+  },
+  "expected": {
+    "outcome": "success",
+    "revealedRawText": null
+  }
+}

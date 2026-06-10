@@ -1,0 +1,25 @@
+{
+  "id": "SDK-TXT-020",
+  "description": "Resetting formatters clears the formatter stack immediately, flipping hasFormatting to false and returning the transformed/display text to the raw value.",
+  "input": {
+    "operation": "inspectFormatterResetState",
+    "rawText": "4111111111111111",
+    "formatter": {
+      "pattern": "(\\d{4})(\\d{4})(\\d{4})(\\d{4})",
+      "template": "$1-$2-$3-$4"
+    }
+  },
+  "expected": {
+    "outcome": "success",
+    "beforeReset": {
+      "hasFormatting": true,
+      "transformedText": "4111-1111-1111-1111",
+      "displayText": "4111-1111-1111-1111"
+    },
+    "afterReset": {
+      "hasFormatting": false,
+      "transformedText": "4111111111111111",
+      "displayText": "4111111111111111"
+    }
+  }
+}

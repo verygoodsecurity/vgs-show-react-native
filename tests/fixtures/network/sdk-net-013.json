@@ -1,0 +1,12 @@
+{
+  "id": "SDK-NET-013",
+  "description": "Setting `requestTimeoutInterval = 10.0` on VGSShowRequestOptions and reading the value back produces 10.0.",
+  "input": {
+    "operation": "setAndReadRequestTimeoutInterval",
+    "value": 10
+  },
+  "expected": {
+    "outcome": "success",
+    "requestTimeoutInterval": 10
+  }
+}

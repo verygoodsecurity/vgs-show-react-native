@@ -1,0 +1,41 @@
+{
+  "id": "SDK-CORE-009",
+  "description": "unsubscribeAllViews() clears every subscribed view and emits one unsubscribe lifecycle event for each formerly subscribed view in registration order.",
+  "input": {
+    "operation": "runVgsShowSubscriptionSequence",
+    "viewKind": "mixed",
+    "operations": [
+      {
+        "action": "subscribe",
+        "viewId": "label1",
+        "viewKind": "label"
+      },
+      {
+        "action": "subscribe",
+        "viewId": "pdf1",
+        "viewKind": "pdf"
+      },
+      {
+        "action": "unsubscribeAllViews"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "subscribedLabels": 0,
+    "subscribedPDFViews": 0,
+    "subscribedViews": 0,
+    "lifecycleEvents": [
+      {
+        "type": "UnsubscribeField",
+        "viewId": "label1",
+        "viewKind": "label"
+      },
+      {
+        "type": "UnsubscribeField",
+        "viewId": "pdf1",
+        "viewKind": "pdf"
+      }
+    ]
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "id": "SDK-TXT-008",
+  "description": "Arrays of valid secure ranges are applied cumulatively against the formatted card number; a default `VGSTextRange()` entry masks the whole string.",
+  "input": {
+    "operation": "applyFormatterThenSecureRangesArray",
+    "rawText": "4111111111111111",
+    "formatter": {
+      "pattern": "(\\d{4})(\\d{4})(\\d{4})(\\d{4})",
+      "template": "$1-$2-$3-$4"
+    },
+    "cases": [
+      {
+        "ranges": [
+          {
+            "start": null,
+            "end": 3
+          },
+          {
+            "start": 5,
+            "end": 13
+          },
+          {
+            "start": 15,
+            "end": null
+          }
+        ]
+      },
+      {
+        "ranges": [
+          {
+            "start": 5,
+            "end": 13
+          },
+          {
+            "start": null,
+            "end": null
+          }
+        ]
+      },
+      {
+        "ranges": [
+          {
+            "start": 0,
+            "end": 0
+          },
+          {
+            "start": 5,
+            "end": 5
+          },
+          {
+            "start": 18,
+            "end": 18
+          }
+        ]
+      },
+      {
+        "ranges": [
+          {
+            "start": 1,
+            "end": 10
+          },
+          {
+            "start": 5,
+            "end": 15
+          },
+          {
+            "start": 18,
+            "end": null
+          }
+        ]
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "formattedTextBeforeMask": "4111-1111-1111-1111",
+    "perCase": [
+      {
+        "maskedText": "****-*********-****"
+      },
+      {
+        "maskedText": "*******************"
+      },
+      {
+        "maskedText": "*111-*111-1111-111*"
+      },
+      {
+        "maskedText": "4***************11*"
+      }
+    ]
+  }
+}

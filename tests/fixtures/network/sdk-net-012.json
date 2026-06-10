@@ -1,0 +1,13 @@
+{
+  "id": "SDK-NET-012",
+  "description": "Custom-hostname resolver, given a hostname that cannot be constructed into a URL (e.g. contains whitespace), resolves to null.",
+  "input": {
+    "operation": "validateCustomHostname",
+    "hostname": "invalid hostname",
+    "tenantId": "tenant123"
+  },
+  "expected": {
+    "outcome": "resolvesTo",
+    "resolved": null
+  }
+}

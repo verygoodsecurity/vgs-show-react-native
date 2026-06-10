@@ -1,0 +1,39 @@
+{
+  "id": "SDK-TXT-004",
+  "description": "Copying with format `raw` returns the unformatted revealed value, and after the revealed value is cleared there is nothing to copy.",
+  "input": {
+    "operation": "copyTextToClipboardValueSelection",
+    "contentPath": "test.label",
+    "operations": [
+      {
+        "action": "setRevealedRawText",
+        "value": "4111111111111111"
+      },
+      {
+        "action": "copyToClipboard",
+        "format": "raw"
+      },
+      {
+        "action": "setRevealedRawText",
+        "value": null
+      },
+      {
+        "action": "copyToClipboard",
+        "format": "raw"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "perStep": [
+      {
+        "afterOperation": 2,
+        "copiedText": "4111111111111111"
+      },
+      {
+        "afterOperation": 4,
+        "copiedText": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "id": "SDK-TXT-017",
+  "description": "With a formatter installed but secure mode left at its default false value, the label pipeline renders formatted text without masking.",
+  "input": {
+    "operation": "inspectDefaultSecureModeFormatting",
+    "rawText": "4111111111111111",
+    "formatter": {
+      "pattern": "(\\d{4})(\\d{4})(\\d{4})(\\d{4})",
+      "template": "$1-$2-$3-$4"
+    }
+  },
+  "expected": {
+    "outcome": "success",
+    "isSecureText": false,
+    "transformedText": "4111-1111-1111-1111",
+    "displayText": "4111-1111-1111-1111",
+    "hasFormatting": true
+  }
+}

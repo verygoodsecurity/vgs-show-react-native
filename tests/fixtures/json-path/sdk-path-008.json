@@ -1,0 +1,27 @@
+{
+  "id": "SDK-PATH-008",
+  "description": "RN treats @-prefixed path segments as literal keys rather than Cocoa KVC aggregate operators. items.@count attempts to read an @count key from the array value and fails with fieldNotFound.",
+  "input": {
+    "operation": "textDecode",
+    "contentPath": "items.@count",
+    "json": {
+      "items": [
+        {
+          "label": "one"
+        },
+        {
+          "label": "two"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "outcome": "failure",
+    "error": {
+      "code": 1403,
+      "type": "fieldNotFound",
+      "message": "Field not found in specified path"
+    },
+    "comparator": "expected-divergence"
+  }
+}

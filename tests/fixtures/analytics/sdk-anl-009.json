@@ -1,0 +1,55 @@
+{
+  "id": "SDK-ANL-009",
+  "description": "beforeSubmit analytics includes only the true content flags and the subscribed field types in request-order context.",
+  "input": {
+    "operation": "simulateBeforeSubmitAnalytics",
+    "vgsShow": {
+      "id": "tenant",
+      "hostname": "alt.example.com"
+    },
+    "customHeaders": {
+      "X-Custom": "1"
+    },
+    "views": [
+      {
+        "viewId": "label1",
+        "kind": "label",
+        "contentPath": "card.token"
+      },
+      {
+        "viewId": "image1",
+        "kind": "image",
+        "contentPath": "card.image"
+      }
+    ],
+    "request": {
+      "path": "post",
+      "payload": {
+        "token": "opaque"
+      }
+    },
+    "response": {
+      "kind": "http",
+      "status": 200,
+      "body": "{\"card\":{\"token\":\"tok_123\",\"image\":\"aW1hZ2U=\"}}"
+    }
+  },
+  "expected": {
+    "outcome": "success",
+    "payload": {
+      "type": "BeforeSubmit",
+      "status": "success",
+      "extraInfo": {
+        "content": [
+          "custom_data",
+          "custom_header",
+          "custom_hostname"
+        ],
+        "field": [
+          "text",
+          "image"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "id": "SDK-ANL-004",
+  "description": "Subscribing a label emits a field-init analytics payload with contentPath and analytics field name only.",
+  "input": {
+    "operation": "simulateFieldInitAnalytics",
+    "contentPath": "card.token"
+  },
+  "expected": {
+    "outcome": "success",
+    "payload": {
+      "type": "Init",
+      "status": "success",
+      "extraInfo": {
+        "contentPath": "card.token",
+        "field": "text"
+      }
+    }
+  }
+}

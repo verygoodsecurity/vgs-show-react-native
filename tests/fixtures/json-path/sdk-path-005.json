@@ -1,0 +1,59 @@
+{
+  "id": "SDK-PATH-005",
+  "description": "Strings containing only characters from [A-Za-z0-9._-] are reported as valid JSON key paths by the advisory validator. Validation is advisory-only: paths still resolve at runtime and warnings are handled separately.",
+  "input": {
+    "operation": "isValidJsonKeyPath",
+    "cases": [
+      {
+        "path": "card_brand_name"
+      },
+      {
+        "path": "card-brand-name"
+      },
+      {
+        "path": "cardBrandName"
+      },
+      {
+        "path": "card_type"
+      },
+      {
+        "path": "CARD_BRAND_NAME"
+      },
+      {
+        "path": "json.card_name"
+      },
+      {
+        "path": "user_info.CARD_DATA.card-brand-name"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "allValid",
+    "allCases": {
+      "isValid": true
+    },
+    "perCase": [
+      {
+        "isValid": true
+      },
+      {
+        "isValid": true
+      },
+      {
+        "isValid": true
+      },
+      {
+        "isValid": true
+      },
+      {
+        "isValid": true
+      },
+      {
+        "isValid": true
+      },
+      {
+        "isValid": true
+      }
+    ]
+  }
+}

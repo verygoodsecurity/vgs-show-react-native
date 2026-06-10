@@ -1,0 +1,27 @@
+{
+  "id": "SDK-CORE-003",
+  "description": "Subscribing the exact same label instance three times leaves exactly one subscribed label and one subscribed view.",
+  "input": {
+    "operation": "runVgsShowSubscriptionSequence",
+    "viewKind": "label",
+    "operations": [
+      {
+        "action": "subscribe",
+        "viewId": "label1"
+      },
+      {
+        "action": "subscribe",
+        "viewId": "label1"
+      },
+      {
+        "action": "subscribe",
+        "viewId": "label1"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "subscribedLabels": 1,
+    "subscribedViews": 1
+  }
+}

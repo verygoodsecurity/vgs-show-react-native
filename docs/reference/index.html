@@ -1,0 +1,252 @@
+<!DOCTYPE html><html class="default" lang="en" data-base="./"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@vgs/show-react-native - v1.1.0</title><meta name="description" content="Documentation for @vgs/show-react-native"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/icons.js" id="tsd-icons-script"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => window.app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar"><div class="tsd-toolbar-contents container"><a href="index.html" class="title">@vgs/show-react-native - v1.1.0</a><div id="tsd-toolbar-links"></div><button id="tsd-search-trigger" class="tsd-widget" aria-label="Search"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-search"></use></svg></button><dialog id="tsd-search" aria-label="Search"><input role="combobox" id="tsd-search-input" aria-controls="tsd-search-results" aria-autocomplete="list" aria-expanded="true" autocapitalize="off" autocomplete="off" placeholder="Search the docs" maxLength="100"/><ul role="listbox" id="tsd-search-results"></ul><div id="tsd-search-status" aria-live="polite" aria-atomic="true"><div>Preparing search index...</div></div></dialog><a href="#" class="tsd-widget menu" id="tsd-toolbar-menu-trigger" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-menu"></use></svg></a></div></header><div class="container container-main"><div class="col-content"><div class="tsd-page-title"><h1>@vgs/show-react-native - v1.1.0</h1></div><div class="tsd-panel tsd-typography"><p align="center">
+  <a href="https://www.verygoodsecurity.com/" rel="nofollow">
+    <img src="https://avatars0.githubusercontent.com/u/17788525" width="128" alt="VGS Logo">
+  </a>
+  <h3 align="center">VGS Show React Native Package</h3>
+  <p align="center">
+    Securely reveal protected text, image, and PDF data in your React Native applications.
+    <br />
+    <a href="https://docs.verygoodsecurity.com/vault/developer-tools/vgs-show"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://www.npmjs.com/package/@vgs/show-react-native">NPM (@vgs/show-react-native)</a>
+    ·
+    <a href="media/AGENTS.md">AI Agents Ready</a>
+  </p>
+</p>
+<h2 id="table-of-contents" class="tsd-anchor-link">Table of Contents<a href="#table-of-contents" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#features">Features</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#ai-agent-integration">AI Agent Integration</a></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#quick-start">Quick Start</a></li>
+<li><a href="#vault-configuration">Vault Configuration</a></li>
+<li><a href="#reveal-requests">Reveal Requests</a></li>
+<li><a href="#components">Components</a>
+<ul>
+<li><a href="#text-reveal">Text Reveal</a></li>
+<li><a href="#image-reveal">Image Reveal</a></li>
+<li><a href="#pdf-reveal">PDF Reveal</a></li>
+</ul>
+</li>
+<li><a href="#refs">Refs</a></li>
+<li><a href="#error-handling">Error Handling</a></li>
+<li><a href="#security-guidance">Security Guidance</a></li>
+<li><a href="#example-app">Example App</a></li>
+<li><a href="#documentation">Documentation</a></li>
+<li><a href="#releases">Releases</a></li>
+<li><a href="#license">License</a></li>
+</ul>
+<h2 id="introduction" class="tsd-anchor-link">Introduction<a href="#introduction" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>The <code>@vgs/show-react-native</code> package by Very Good Security (VGS) enables React
+Native applications to reveal previously tokenized or aliased data from a VGS
+vault without exposing raw values through your application API surface.</p>
+<p>Use it when your app needs to display protected text, image, or PDF content
+while keeping revealed values inside SDK-managed components.</p>
+<h2 id="features" class="tsd-anchor-link">Features<a href="#features" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<ul>
+<li><strong>Secure Data Reveal:</strong> Display sensitive vault data without returning raw
+text, media bytes, base64 payloads, or response bodies to application code.</li>
+<li><strong>Batched Requests:</strong> Use one <code>VGSShow</code> instance to coordinate multiple text,
+image, and PDF components from a single reveal response.</li>
+<li><strong>Text Display Controls:</strong> Mask revealed text, apply transformations, copy
+allowed formats, and clear displayed values.</li>
+<li><strong>Media Components:</strong> Render protected image and PDF content from configured
+response fields.</li>
+<li><strong>Safe Error Surface:</strong> Handle stable <code>VGSShowError</code> codes and types without
+logging sensitive payloads.</li>
+<li><strong>AI Agent Ready:</strong> Includes a public integration skill for compatible agents
+working with this SDK.</li>
+</ul>
+<h2 id="installation" class="tsd-anchor-link">Installation<a href="#installation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>Install the <code>@vgs/show-react-native</code> package using npm:</p>
+<pre><code class="bash"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">install</span><span class="hl-1"> </span><span class="hl-2">@vgs/show-react-native</span>
+</code><button type="button">Copy</button></pre>
+
+<p>Peer dependencies:</p>
+<ul>
+<li><code>react &gt;= 19.1.0</code></li>
+<li><code>react-native &gt;= 0.81.4</code></li>
+</ul>
+<p>PDF reveal uses native renderer dependencies bundled by the SDK. Rebuild the
+native app after installation so React Native can link them.</p>
+<p>Supported platforms:</p>
+<ul>
+<li>iOS</li>
+<li>Android</li>
+</ul>
+<p>Web is intentionally unsupported.</p>
+<h2 id="ai-agent-integration" class="tsd-anchor-link">AI Agent Integration<a href="#ai-agent-integration" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>This repository ships a public AI skill at
+<a href="media/SKILL.md"><code>skills/vgs-show-react-native-guide/SKILL.md</code></a>
+for teams integrating <code>@vgs/show-react-native</code> into an app.</p>
+<p>Recommended: install the skill with <code>skills.sh</code>. This is the easiest way to
+give a compatible AI agent the repository-specific guidance it needs for
+<code>@vgs/show-react-native</code> integrations.</p>
+<p>The installed skill bundle includes
+<a href="media/AGENTS.md"><code>references/AGENTS.md</code></a>,
+which is the canonical durable integration guide for this SDK.</p>
+<p>What the skill is useful for:</p>
+<ul>
+<li>matching guidance to the installed <code>@vgs/show-react-native</code> version when that
+version can be detected</li>
+<li>steering integrations toward the correct reveal setup for text, image, and
+PDF use cases</li>
+<li>enforcing non-empty <code>contentPath</code> values before requests and batching
+subscribed components through a single <code>VGSShow</code></li>
+<li>preserving secure masking, safe copy behavior, and redacted error or logging
+guidance</li>
+<li>following the testing and upgrade rules in
+<a href="media/AGENTS.md"><code>references/AGENTS.md</code></a></li>
+</ul>
+<p>Install the skill with <code>skills.sh</code>:</p>
+<pre><code class="bash"><span class="hl-0">npx</span><span class="hl-1"> </span><span class="hl-2">skills</span><span class="hl-1"> </span><span class="hl-2">add</span><span class="hl-1"> </span><span class="hl-2">https://github.com/verygoodsecurity/vgs-show-react-native</span><span class="hl-1"> </span><span class="hl-3">--skill</span><span class="hl-1"> </span><span class="hl-2">vgs-show-react-native-guide</span>
+</code><button type="button">Copy</button></pre>
+
+<p>If your AI tool does not support skills yet, load
+<a href="media/AGENTS.md"><code>skills/vgs-show-react-native-guide/references/AGENTS.md</code></a>
+directly.</p>
+<p>Minimal System Prompt Example:</p>
+<pre><code class="text">You are an autonomous engineering agent integrating the VGS Show React Native SDK into an existing React Native app.
+Use skills/vgs-show-react-native-guide/references/AGENTS.md as the authoritative policy.
+Constraints:
+- Only package-root public APIs from @vgs/show-react-native.
+- No raw sensitive data in logs, tests, callbacks, analytics, or app state.
+- All reveal components must have non-empty contentPath values before requests.
+- Secure masking applied where required before user-visible actions.
+Goals:
+1. Add a screen revealing a user&#39;s card number, expiration date, image, and PDF statement using a single batched request.
+2. Implement secure display for the card number and expiration date.
+3. Provide tests for a missing contentPath response field.
+Return: Modified React Native source files only, no secrets.
+</code><button type="button">Copy</button></pre>
+
+<p>Developer Prompt Example:</p>
+<pre><code class="text">Task: Add secure display of card number and expiration date with transformed copy behavior.
+Follow skills/vgs-show-react-native-guide/references/AGENTS.md.
+Do not log raw card data; add tests for masking and a missing response path.
+</code><button type="button">Copy</button></pre>
+
+<h2 id="prerequisites" class="tsd-anchor-link">Prerequisites<a href="#prerequisites" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>You should have an organization registered in the
+<a href="https://dashboard.verygoodsecurity.com/dashboard/" target="_blank">VGS Dashboard</a>.
+A Sandbox vault is pre-created for you. Configure a reveal route in your vault,
+then use your vault ID, environment, route path, and response field paths in the
+SDK.</p>
+<p>Use environment-specific vault IDs and routes from your VGS account. Keep
+production vault IDs, tokens, customer records, and payment data out of sample
+code, logs, screenshots, and test fixtures.</p>
+<h2 id="quick-start" class="tsd-anchor-link">Quick Start<a href="#quick-start" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>Import the package components:</p>
+<pre><code class="tsx"><span class="hl-4">import</span><span class="hl-1"> </span><span class="hl-3">*</span><span class="hl-1"> </span><span class="hl-4">as</span><span class="hl-1"> </span><span class="hl-5">React</span><span class="hl-1"> </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&quot;react&quot;</span><span class="hl-1">;</span><br/><span class="hl-4">import</span><span class="hl-1"> { </span><span class="hl-5">Button</span><span class="hl-1">, </span><span class="hl-5">SafeAreaView</span><span class="hl-1">, </span><span class="hl-5">Text</span><span class="hl-1">, </span><span class="hl-5">View</span><span class="hl-1"> } </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&quot;react-native&quot;</span><span class="hl-1">;</span><br/><span class="hl-4">import</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-5">VGSShow</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">VGSShowError</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">VGSShowImage</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">VGSShowLabel</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">VGSShowPdf</span><br/><span class="hl-1">} </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&quot;@vgs/show-react-native&quot;</span><span class="hl-1">;</span>
+</code><button type="button">Copy</button></pre>
+
+<p>Create one <code>VGSShow</code> instance for the screen, render subscribed components with
+explicit <code>contentPath</code> values, then call <code>request()</code>:</p>
+<pre><code class="tsx"><span class="hl-4">export</span><span class="hl-1"> </span><span class="hl-3">function</span><span class="hl-1"> </span><span class="hl-0">RevealScreen</span><span class="hl-1">() {</span><br/><span class="hl-1">  </span><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">showRef</span><span class="hl-1"> = </span><span class="hl-5">React</span><span class="hl-1">.</span><span class="hl-0">useRef</span><span class="hl-1">&lt;</span><span class="hl-7">VGSShow</span><span class="hl-1"> | </span><span class="hl-7">null</span><span class="hl-1">&gt;(</span><span class="hl-3">null</span><span class="hl-1">);</span><br/><span class="hl-1">  </span><span class="hl-3">const</span><span class="hl-1"> [</span><span class="hl-6">status</span><span class="hl-1">, </span><span class="hl-6">setStatus</span><span class="hl-1">] = </span><span class="hl-5">React</span><span class="hl-1">.</span><span class="hl-0">useState</span><span class="hl-1">(</span><span class="hl-2">&quot;Idle&quot;</span><span class="hl-1">);</span><br/><br/><span class="hl-1">  </span><span class="hl-4">if</span><span class="hl-1"> (</span><span class="hl-5">showRef</span><span class="hl-1">.</span><span class="hl-5">current</span><span class="hl-1"> === </span><span class="hl-3">null</span><span class="hl-1">) {</span><br/><span class="hl-1">    </span><span class="hl-5">showRef</span><span class="hl-1">.</span><span class="hl-5">current</span><span class="hl-1"> = </span><span class="hl-3">new</span><span class="hl-1"> </span><span class="hl-0">VGSShow</span><span class="hl-1">({</span><br/><span class="hl-1">      </span><span class="hl-5">id:</span><span class="hl-1"> </span><span class="hl-2">&quot;your-vault-id&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">      </span><span class="hl-5">environment:</span><span class="hl-1"> </span><span class="hl-2">&quot;sandbox&quot;</span><br/><span class="hl-1">    });</span><br/><span class="hl-1">  }</span><br/><br/><span class="hl-1">  </span><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">vgsShow</span><span class="hl-1"> = </span><span class="hl-5">showRef</span><span class="hl-1">.</span><span class="hl-5">current</span><span class="hl-1">;</span><br/><br/><span class="hl-1">  </span><span class="hl-3">async</span><span class="hl-1"> </span><span class="hl-3">function</span><span class="hl-1"> </span><span class="hl-0">reveal</span><span class="hl-1">() {</span><br/><span class="hl-1">    </span><span class="hl-0">setStatus</span><span class="hl-1">(</span><span class="hl-2">&quot;Loading&quot;</span><span class="hl-1">);</span><br/><br/><span class="hl-1">    </span><span class="hl-4">try</span><span class="hl-1"> {</span><br/><span class="hl-1">      </span><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">result</span><span class="hl-1"> = </span><span class="hl-4">await</span><span class="hl-1"> </span><span class="hl-5">vgsShow</span><span class="hl-1">.</span><span class="hl-0">request</span><span class="hl-1">({</span><br/><span class="hl-1">        </span><span class="hl-5">path:</span><span class="hl-1"> </span><span class="hl-2">&quot;/post&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">        </span><span class="hl-5">method:</span><span class="hl-1"> </span><span class="hl-2">&quot;POST&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">        </span><span class="hl-5">payload:</span><span class="hl-1"> {</span><br/><span class="hl-1">          </span><span class="hl-5">customerId:</span><span class="hl-1"> </span><span class="hl-2">&quot;synthetic-customer-id&quot;</span><br/><span class="hl-1">        }</span><br/><span class="hl-1">      });</span><br/><br/><span class="hl-1">      </span><span class="hl-0">setStatus</span><span class="hl-1">(</span><span class="hl-2">`Reveal complete (</span><span class="hl-3">${</span><span class="hl-5">result</span><span class="hl-8">.</span><span class="hl-5">code</span><span class="hl-3">}</span><span class="hl-2">)`</span><span class="hl-1">);</span><br/><span class="hl-1">    } </span><span class="hl-4">catch</span><span class="hl-1"> (</span><span class="hl-5">error</span><span class="hl-1">) {</span><br/><span class="hl-1">      </span><span class="hl-4">if</span><span class="hl-1"> (</span><span class="hl-5">error</span><span class="hl-1"> </span><span class="hl-3">instanceof</span><span class="hl-1"> </span><span class="hl-7">VGSShowError</span><span class="hl-1">) {</span><br/><span class="hl-1">        </span><span class="hl-0">setStatus</span><span class="hl-1">(</span><span class="hl-2">`Reveal failed (</span><span class="hl-3">${</span><span class="hl-5">error</span><span class="hl-8">.</span><span class="hl-5">code</span><span class="hl-3">}</span><span class="hl-2">)`</span><span class="hl-1">);</span><br/><span class="hl-1">        </span><span class="hl-4">return</span><span class="hl-1">;</span><br/><span class="hl-1">      }</span><br/><br/><span class="hl-1">      </span><span class="hl-0">setStatus</span><span class="hl-1">(</span><span class="hl-2">&quot;Reveal failed&quot;</span><span class="hl-1">);</span><br/><span class="hl-1">    }</span><br/><span class="hl-1">  }</span><br/><br/><span class="hl-1">  </span><span class="hl-4">return</span><span class="hl-1"> (</span><br/><span class="hl-1">    </span><span class="hl-9">&lt;</span><span class="hl-7">SafeAreaView</span><span class="hl-9">&gt;</span><br/><span class="hl-1">      </span><span class="hl-9">&lt;</span><span class="hl-7">View</span><span class="hl-9">&gt;</span><br/><span class="hl-1">        </span><span class="hl-9">&lt;</span><span class="hl-7">VGSShowLabel</span><br/><span class="hl-1">          </span><span class="hl-10">vgsShow</span><span class="hl-1">=</span><span class="hl-3">{</span><span class="hl-5">vgsShow</span><span class="hl-3">}</span><br/><span class="hl-1">          </span><span class="hl-10">contentPath</span><span class="hl-1">=</span><span class="hl-2">&quot;card.number&quot;</span><br/><span class="hl-1">          </span><span class="hl-10">placeholder</span><span class="hl-1">=</span><span class="hl-2">&quot;**** **** **** ****&quot;</span><br/><span class="hl-1">          </span><span class="hl-10">isSecureText</span><span class="hl-1">=</span><span class="hl-3">{true}</span><br/><span class="hl-1">          </span><span class="hl-10">onRevealError</span><span class="hl-1">=</span><span class="hl-3">{</span><span class="hl-8">(</span><span class="hl-5">error</span><span class="hl-8">) </span><span class="hl-3">=&gt;</span><span class="hl-8"> {</span><br/><span class="hl-8">            </span><span class="hl-0">setStatus</span><span class="hl-8">(</span><span class="hl-2">`Card number failed (</span><span class="hl-3">${</span><span class="hl-5">error</span><span class="hl-8">.</span><span class="hl-5">code</span><span class="hl-3">}</span><span class="hl-2">)`</span><span class="hl-8">);</span><br/><span class="hl-8">          }</span><span class="hl-3">}</span><br/><span class="hl-1">        </span><span class="hl-9">/&gt;</span><br/><br/><span class="hl-1">        </span><span class="hl-9">&lt;</span><span class="hl-7">VGSShowLabel</span><br/><span class="hl-1">          </span><span class="hl-10">vgsShow</span><span class="hl-1">=</span><span class="hl-3">{</span><span class="hl-5">vgsShow</span><span class="hl-3">}</span><br/><span class="hl-1">          </span><span class="hl-10">contentPath</span><span class="hl-1">=</span><span class="hl-2">&quot;card.expirationDate&quot;</span><br/><span class="hl-1">          </span><span class="hl-10">placeholder</span><span class="hl-1">=</span><span class="hl-2">&quot;**/**&quot;</span><br/><span class="hl-1">          </span><span class="hl-10">isSecureText</span><span class="hl-1">=</span><span class="hl-3">{true}</span><br/><span class="hl-1">          </span><span class="hl-10">onRevealError</span><span class="hl-1">=</span><span class="hl-3">{</span><span class="hl-8">(</span><span class="hl-5">error</span><span class="hl-8">) </span><span class="hl-3">=&gt;</span><span class="hl-8"> {</span><br/><span class="hl-8">            </span><span class="hl-0">setStatus</span><span class="hl-8">(</span><span class="hl-2">`Expiration date failed (</span><span class="hl-3">${</span><span class="hl-5">error</span><span class="hl-8">.</span><span class="hl-5">code</span><span class="hl-3">}</span><span class="hl-2">)`</span><span class="hl-8">);</span><br/><span class="hl-8">          }</span><span class="hl-3">}</span><br/><span class="hl-1">        </span><span class="hl-9">/&gt;</span><br/><br/><span class="hl-1">        </span><span class="hl-9">&lt;</span><span class="hl-7">VGSShowImage</span><br/><span class="hl-1">          </span><span class="hl-10">vgsShow</span><span class="hl-1">=</span><span class="hl-3">{</span><span class="hl-5">vgsShow</span><span class="hl-3">}</span><br/><span class="hl-1">          </span><span class="hl-10">contentPath</span><span class="hl-1">=</span><span class="hl-2">&quot;card.image&quot;</span><br/><span class="hl-1">          </span><span class="hl-10">onImageError</span><span class="hl-1">=</span><span class="hl-3">{</span><span class="hl-8">(</span><span class="hl-5">error</span><span class="hl-8">) </span><span class="hl-3">=&gt;</span><span class="hl-8"> {</span><br/><span class="hl-8">            </span><span class="hl-0">setStatus</span><span class="hl-8">(</span><span class="hl-2">`Image failed (</span><span class="hl-3">${</span><span class="hl-5">error</span><span class="hl-8">.</span><span class="hl-5">code</span><span class="hl-3">}</span><span class="hl-2">)`</span><span class="hl-8">);</span><br/><span class="hl-8">          }</span><span class="hl-3">}</span><br/><span class="hl-1">        </span><span class="hl-9">/&gt;</span><br/><br/><span class="hl-1">        </span><span class="hl-9">&lt;</span><span class="hl-7">VGSShowPdf</span><br/><span class="hl-1">          </span><span class="hl-10">vgsShow</span><span class="hl-1">=</span><span class="hl-3">{</span><span class="hl-5">vgsShow</span><span class="hl-3">}</span><br/><span class="hl-1">          </span><span class="hl-10">contentPath</span><span class="hl-1">=</span><span class="hl-2">&quot;card.statement&quot;</span><br/><span class="hl-1">          </span><span class="hl-10">onDocumentError</span><span class="hl-1">=</span><span class="hl-3">{</span><span class="hl-8">(</span><span class="hl-5">error</span><span class="hl-8">) </span><span class="hl-3">=&gt;</span><span class="hl-8"> {</span><br/><span class="hl-8">            </span><span class="hl-0">setStatus</span><span class="hl-8">(</span><span class="hl-2">`PDF failed (</span><span class="hl-3">${</span><span class="hl-5">error</span><span class="hl-8">.</span><span class="hl-5">code</span><span class="hl-3">}</span><span class="hl-2">)`</span><span class="hl-8">);</span><br/><span class="hl-8">          }</span><span class="hl-3">}</span><br/><span class="hl-1">        </span><span class="hl-9">/&gt;</span><br/><br/><span class="hl-1">        </span><span class="hl-9">&lt;</span><span class="hl-7">Button</span><span class="hl-1"> </span><span class="hl-10">title</span><span class="hl-1">=</span><span class="hl-2">&quot;Reveal&quot;</span><span class="hl-1"> </span><span class="hl-10">onPress</span><span class="hl-1">=</span><span class="hl-3">{</span><span class="hl-5">reveal</span><span class="hl-3">}</span><span class="hl-1"> </span><span class="hl-9">/&gt;</span><br/><span class="hl-1">        </span><span class="hl-9">&lt;</span><span class="hl-7">Text</span><span class="hl-9">&gt;</span><span class="hl-3">{</span><span class="hl-5">status</span><span class="hl-3">}</span><span class="hl-9">&lt;/</span><span class="hl-7">Text</span><span class="hl-9">&gt;</span><br/><span class="hl-1">      </span><span class="hl-9">&lt;/</span><span class="hl-7">View</span><span class="hl-9">&gt;</span><br/><span class="hl-1">    </span><span class="hl-9">&lt;/</span><span class="hl-7">SafeAreaView</span><span class="hl-9">&gt;</span><br/><span class="hl-1">  );</span><br/><span class="hl-1">}</span>
+</code><button type="button">Copy</button></pre>
+
+<h2 id="vault-configuration" class="tsd-anchor-link">Vault Configuration<a href="#vault-configuration" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>Create one <code>VGSShow</code> instance for the screen or flow that reveals data:</p>
+<pre><code class="ts"><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">vgsShow</span><span class="hl-1"> = </span><span class="hl-3">new</span><span class="hl-1"> </span><span class="hl-0">VGSShow</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-5">id:</span><span class="hl-1"> </span><span class="hl-2">&quot;your-vault-id&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">environment:</span><span class="hl-1"> </span><span class="hl-2">&quot;sandbox&quot;</span><br/><span class="hl-1">});</span>
+</code><button type="button">Copy</button></pre>
+
+<p>Supported options:</p>
+<ul>
+<li><code>id</code>: your VGS vault ID.</li>
+<li><code>environment</code>: <code>sandbox</code>, <code>live</code>, or a regional live environment such as
+<code>live-eu1</code>.</li>
+<li><code>dataRegion</code>: optional region suffix for regional vault routing when using
+<code>environment: &quot;sandbox&quot;</code> or <code>environment: &quot;live&quot;</code>.</li>
+<li><code>hostname</code>: optional custom hostname.</li>
+</ul>
+<h2 id="reveal-requests" class="tsd-anchor-link">Reveal Requests<a href="#reveal-requests" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p><code>request()</code> sends a reveal request and resolves when the HTTP request succeeds:</p>
+<pre><code class="ts"><span class="hl-4">await</span><span class="hl-1"> </span><span class="hl-5">vgsShow</span><span class="hl-1">.</span><span class="hl-0">request</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-5">path:</span><span class="hl-1"> </span><span class="hl-2">&quot;/post&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">method:</span><span class="hl-1"> </span><span class="hl-2">&quot;POST&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">payload:</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-5">customerId:</span><span class="hl-1"> </span><span class="hl-2">&quot;synthetic-customer-id&quot;</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">  </span><span class="hl-5">requestOptions:</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-5">requestTimeoutInterval:</span><span class="hl-1"> </span><span class="hl-11">60</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">});</span>
+</code><button type="button">Copy</button></pre>
+
+<p>Request options:</p>
+<ul>
+<li><code>path</code>: request path on the configured vault host.</li>
+<li><code>method</code>: <code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>PATCH</code>, or <code>DELETE</code>. Defaults to <code>POST</code>.</li>
+<li><code>payload</code>: JSON object sent as the request body.</li>
+<li><code>requestOptions.requestTimeoutInterval</code>: timeout in seconds.</li>
+</ul>
+<p>Subscribed components receive their content from the response field selected by
+their <code>contentPath</code>.</p>
+<h2 id="components" class="tsd-anchor-link">Components<a href="#components" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>The package provides React Native components for revealing sensitive text,
+image, and PDF content. Each component must receive the same <code>VGSShow</code> instance
+for the flow and a non-empty <code>contentPath</code> that maps to a response field.</p>
+<h3 id="text-reveal" class="tsd-anchor-link">Text Reveal<a href="#text-reveal" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p><code>VGSShowLabel</code> subscribes to text content and supports placeholders, secure text
+masking, copy behavior, transformations, and clearing.</p>
+<pre><code class="tsx"><span class="hl-9">&lt;&gt;</span><br/><span class="hl-1">  </span><span class="hl-9">&lt;</span><span class="hl-7">VGSShowLabel</span><br/><span class="hl-1">    </span><span class="hl-10">vgsShow</span><span class="hl-1">=</span><span class="hl-3">{</span><span class="hl-5">vgsShow</span><span class="hl-3">}</span><br/><span class="hl-1">    </span><span class="hl-10">contentPath</span><span class="hl-1">=</span><span class="hl-2">&quot;card.number&quot;</span><br/><span class="hl-1">    </span><span class="hl-10">placeholder</span><span class="hl-1">=</span><span class="hl-2">&quot;**** **** **** ****&quot;</span><br/><span class="hl-1">    </span><span class="hl-10">isSecureText</span><span class="hl-1">=</span><span class="hl-3">{true}</span><br/><span class="hl-1">  </span><span class="hl-9">/&gt;</span><br/><br/><span class="hl-1">  </span><span class="hl-9">&lt;</span><span class="hl-7">VGSShowLabel</span><br/><span class="hl-1">    </span><span class="hl-10">vgsShow</span><span class="hl-1">=</span><span class="hl-3">{</span><span class="hl-5">vgsShow</span><span class="hl-3">}</span><br/><span class="hl-1">    </span><span class="hl-10">contentPath</span><span class="hl-1">=</span><span class="hl-2">&quot;card.expirationDate&quot;</span><br/><span class="hl-1">    </span><span class="hl-10">placeholder</span><span class="hl-1">=</span><span class="hl-2">&quot;**/**&quot;</span><br/><span class="hl-1">    </span><span class="hl-10">isSecureText</span><span class="hl-1">=</span><span class="hl-3">{true}</span><br/><span class="hl-1">  </span><span class="hl-9">/&gt;</span><br/><span class="hl-9">&lt;/&gt;</span>
+</code><button type="button">Copy</button></pre>
+
+<h3 id="image-reveal" class="tsd-anchor-link">Image Reveal<a href="#image-reveal" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p><code>VGSShowImage</code> subscribes to base64 image content and exposes only logical state
+through refs and callbacks.</p>
+<pre><code class="tsx"><span class="hl-9">&lt;</span><span class="hl-7">VGSShowImage</span><br/><span class="hl-1">  </span><span class="hl-10">vgsShow</span><span class="hl-1">=</span><span class="hl-3">{</span><span class="hl-5">vgsShow</span><span class="hl-3">}</span><br/><span class="hl-1">  </span><span class="hl-10">contentPath</span><span class="hl-1">=</span><span class="hl-2">&quot;card.image&quot;</span><br/><span class="hl-1">  </span><span class="hl-10">contentMode</span><span class="hl-1">=</span><span class="hl-2">&quot;scaleAspectFit&quot;</span><br/><span class="hl-9">/&gt;</span>
+</code><button type="button">Copy</button></pre>
+
+<h3 id="pdf-reveal" class="tsd-anchor-link">PDF Reveal<a href="#pdf-reveal" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p><code>VGSShowPdf</code> subscribes to base64 PDF content, renders it through
+<code>react-native-pdf</code>, and supports PDF display options.</p>
+<pre><code class="tsx"><span class="hl-9">&lt;</span><span class="hl-7">VGSShowPdf</span><br/><span class="hl-1">  </span><span class="hl-10">vgsShow</span><span class="hl-1">=</span><span class="hl-3">{</span><span class="hl-5">vgsShow</span><span class="hl-3">}</span><br/><span class="hl-1">  </span><span class="hl-10">contentPath</span><span class="hl-1">=</span><span class="hl-2">&quot;card.statement&quot;</span><br/><span class="hl-1">  </span><span class="hl-10">pdfDisplayMode</span><span class="hl-1">=</span><span class="hl-2">&quot;singlePageContinuous&quot;</span><br/><span class="hl-1">  </span><span class="hl-10">pdfDisplayDirection</span><span class="hl-1">=</span><span class="hl-2">&quot;vertical&quot;</span><br/><span class="hl-9">/&gt;</span>
+</code><button type="button">Copy</button></pre>
+
+<h2 id="refs" class="tsd-anchor-link">Refs<a href="#refs" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>Use refs for component actions and logical state:</p>
+<pre><code class="tsx"><span class="hl-4">import</span><span class="hl-1"> </span><span class="hl-3">*</span><span class="hl-1"> </span><span class="hl-4">as</span><span class="hl-1"> </span><span class="hl-5">React</span><span class="hl-1"> </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&quot;react&quot;</span><span class="hl-1">;</span><br/><span class="hl-4">import</span><span class="hl-1"> </span><span class="hl-4">type</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-5">VGSShowImageRef</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">VGSShowLabelRef</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">VGSShowPdfRef</span><br/><span class="hl-1">} </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&quot;@vgs/show-react-native&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">labelRef</span><span class="hl-1"> = </span><span class="hl-5">React</span><span class="hl-1">.</span><span class="hl-0">useRef</span><span class="hl-1">&lt;</span><span class="hl-7">VGSShowLabelRef</span><span class="hl-1"> | </span><span class="hl-7">null</span><span class="hl-1">&gt;(</span><span class="hl-3">null</span><span class="hl-1">);</span><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">imageRef</span><span class="hl-1"> = </span><span class="hl-5">React</span><span class="hl-1">.</span><span class="hl-0">useRef</span><span class="hl-1">&lt;</span><span class="hl-7">VGSShowImageRef</span><span class="hl-1"> | </span><span class="hl-7">null</span><span class="hl-1">&gt;(</span><span class="hl-3">null</span><span class="hl-1">);</span><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">pdfRef</span><span class="hl-1"> = </span><span class="hl-5">React</span><span class="hl-1">.</span><span class="hl-0">useRef</span><span class="hl-1">&lt;</span><span class="hl-7">VGSShowPdfRef</span><span class="hl-1"> | </span><span class="hl-7">null</span><span class="hl-1">&gt;(</span><span class="hl-3">null</span><span class="hl-1">);</span>
+</code><button type="button">Copy</button></pre>
+
+<ul>
+<li><code>VGSShowLabelRef</code>: <code>clearText()</code>, <code>copyToClipboard()</code>, <code>setSecureText()</code>,
+<code>addTransformationRegex()</code>, and <code>resetAllFormatters()</code>.</li>
+<li><code>VGSShowImageRef</code>: <code>hasImage</code> and <code>clear()</code>.</li>
+<li><code>VGSShowPdfRef</code>: <code>hasDocument</code> and <code>clear()</code>.</li>
+</ul>
+<p>Image and PDF refs intentionally report only logical booleans, not media data.</p>
+<h2 id="error-handling" class="tsd-anchor-link">Error Handling<a href="#error-handling" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>SDK failures reject with <code>VGSShowError</code> or invoke component error callbacks with
+<code>VGSShowError</code>:</p>
+<pre><code class="ts"><span class="hl-4">try</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-4">await</span><span class="hl-1"> </span><span class="hl-5">vgsShow</span><span class="hl-1">.</span><span class="hl-0">request</span><span class="hl-1">({ </span><span class="hl-5">path:</span><span class="hl-1"> </span><span class="hl-2">&quot;/post&quot;</span><span class="hl-1"> });</span><br/><span class="hl-1">} </span><span class="hl-4">catch</span><span class="hl-1"> (</span><span class="hl-5">error</span><span class="hl-1">) {</span><br/><span class="hl-1">  </span><span class="hl-4">if</span><span class="hl-1"> (</span><span class="hl-5">error</span><span class="hl-1"> </span><span class="hl-3">instanceof</span><span class="hl-1"> </span><span class="hl-7">VGSShowError</span><span class="hl-1">) {</span><br/><span class="hl-1">    </span><span class="hl-0">setStatus</span><span class="hl-1">(</span><span class="hl-2">`Reveal failed (</span><span class="hl-3">${</span><span class="hl-5">error</span><span class="hl-8">.</span><span class="hl-5">code</span><span class="hl-3">}</span><span class="hl-2">)`</span><span class="hl-1">);</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">}</span>
+</code><button type="button">Copy</button></pre>
+
+<p>Use <code>code</code> or <code>type</code> for app logic. Do not log request payloads, response bodies,
+headers, or revealed component content while handling errors.</p>
+<h2 id="security-guidance" class="tsd-anchor-link">Security Guidance<a href="#security-guidance" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<ul>
+<li>Keep revealed values inside the VGS Show components.</li>
+<li>Do not mirror revealed text or media data into app state, analytics, logs,
+crash reports, screenshots, or custom callbacks.</li>
+<li>Do not enable network debug logging in production.</li>
+<li>Do not log custom headers, request payloads, response bodies, tokens, or
+authorization values.</li>
+<li>Keep example values synthetic.</li>
+<li>Treat <code>contentPath</code> as field metadata. It should identify the response field,
+not contain sensitive values.</li>
+</ul>
+<h2 id="example-app" class="tsd-anchor-link">Example App<a href="#example-app" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>You can check the example application at <code>example/src/App.tsx</code>.
+It contains a small Expo demo app with separate card, image, and PDF reveal
+use-cases that share one runtime vault configuration.</p>
+<p>To run the example application:</p>
+<pre><code class="bash"><span class="hl-12"># 1. Install repository dependencies from the root folder.</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">install</span><br/><br/><span class="hl-12"># 2. Navigate to the example folder.</span><br/><span class="hl-0">cd</span><span class="hl-1"> </span><span class="hl-2">example</span><br/><br/><span class="hl-12"># 3. Install example dependencies.</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">install</span><br/><br/><span class="hl-12"># 4. Build and run the example app for iOS.</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">ios</span><br/><br/><span class="hl-12"># 5. Start Metro when needed.</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">start</span>
+</code><button type="button">Copy</button></pre>
+
+<h2 id="documentation" class="tsd-anchor-link">Documentation<a href="#documentation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<ul>
+<li>Package Documentation:
+<a href="https://docs.verygoodsecurity.com/vault/developer-tools/vgs-show">https://docs.verygoodsecurity.com/vault/developer-tools/vgs-show</a></li>
+<li>Generated API Reference: <code>docs/reference/index.html</code></li>
+</ul>
+<h2 id="releases" class="tsd-anchor-link">Releases<a href="#releases" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>To follow <code>@vgs/show-react-native</code> updates and changes, check the
+<a href="https://github.com/verygoodsecurity/vgs-show-react-native/releases">releases page</a>.</p>
+<h2 id="license" class="tsd-anchor-link">License<a href="#license" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>The VGS Show React Native package is released under the MIT license.</p>
+</div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-accordion"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-chevronDown"></use></svg><h3>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li></ul></div><div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-chevronDown"></use></svg><h3>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#table-of-contents"><span>Table of <wbr/>Contents</span></a><a href="#introduction"><span>Introduction</span></a><a href="#features"><span>Features</span></a><a href="#installation"><span>Installation</span></a><a href="#ai-agent-integration"><span>AI <wbr/>Agent <wbr/>Integration</span></a><a href="#prerequisites"><span>Prerequisites</span></a><a href="#quick-start"><span>Quick <wbr/>Start</span></a><a href="#vault-configuration"><span>Vault <wbr/>Configuration</span></a><a href="#reveal-requests"><span>Reveal <wbr/>Requests</span></a><a href="#components"><span>Components</span></a><ul><li><a href="#text-reveal"><span>Text <wbr/>Reveal</span></a></li><li><a href="#image-reveal"><span>Image <wbr/>Reveal</span></a></li><li><a href="#pdf-reveal"><span>PDF <wbr/>Reveal</span></a></li></ul><a href="#refs"><span>Refs</span></a><a href="#error-handling"><span>Error <wbr/>Handling</span></a><a href="#security-guidance"><span>Security <wbr/>Guidance</span></a><a href="#example-app"><span>Example <wbr/>App</span></a><a href="#documentation"><span>Documentation</span></a><a href="#releases"><span>Releases</span></a><a href="#license"><span>License</span></a></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="modules.html">@vgs/show-react-native - v1.1.0</a><ul class="tsd-small-nested-navigation" id="tsd-nav-container"><li>Loading...</li></ul></nav></div></div></div><footer></footer><div class="overlay"></div></body></html>

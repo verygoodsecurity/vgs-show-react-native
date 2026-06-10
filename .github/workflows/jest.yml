@@ -1,0 +1,315 @@
+name: Tests + Scans
+
+on:
+  pull_request:
+  push:
+    branches:
+      - canary
+
+jobs:
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.19.0
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Run Jest suite
+        run: npm test -- --ci
+
+  resolve_ios_build_meta:
+    name: Build iOS App + Resolve Metadata
+    runs-on: macos-15
+    env:
+      EXPO_PUBLIC_LEGACY_ARCH: "1"
+      EXPO_PUBLIC_VAULT_ID: ${{ secrets.VAULT_ID }}
+      RCT_NEW_ARCH_ENABLED: "0"
+    outputs:
+      build_name: ${{ steps.meta.outputs.build_name }}
+      build_slug: ${{ steps.meta.outputs.build_slug }}
+      bundle_id: ${{ steps.meta.outputs.bundle_id }}
+      archive_path: ${{ steps.meta.outputs.archive_path }}
+      artifact_name: ${{ steps.artifact.outputs.artifact_name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Validate VAULT_ID Secret
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${EXPO_PUBLIC_VAULT_ID}" ]; then
+            echo "::error::Missing required VAULT_ID secret"
+            exit 1
+          fi
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.19.0
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Build SDK
+        run: npm run build
+      - name: Install example dependencies
+        run: npm ci --prefix example
+      - name: Setup Xcode 26.2
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: "26.2"
+      - name: Generate iOS Native Project
+        working-directory: example
+        run: npx expo prebuild --platform ios --non-interactive
+      - name: Install iOS Pods
+        working-directory: example/ios
+        run: pod install
+      - name: Build iOS Simulator App
+        shell: bash
+        run: |
+          set -euo pipefail
+          DERIVED_DATA_PATH="$RUNNER_TEMP/ios-derived-data"
+          WORKSPACE_PATH="$(find example/ios -maxdepth 1 -type d -name '*.xcworkspace' | head -n 1)"
+          if [ -z "$WORKSPACE_PATH" ]; then
+            echo "::error::No .xcworkspace found under example/ios after Expo prebuild"
+            exit 1
+          fi
+
+          SCHEME_NAME="$(basename "$WORKSPACE_PATH" .xcworkspace)"
+          xcodebuild \
+            -workspace "$WORKSPACE_PATH" \
+            -scheme "$SCHEME_NAME" \
+            -configuration Release \
+            -sdk iphonesimulator \
+            -destination "generic/platform=iOS Simulator" \
+            -derivedDataPath "$DERIVED_DATA_PATH" \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+
+          APP_PATH="$(find "$DERIVED_DATA_PATH/Build/Products" -maxdepth 2 -type d -name '*.app' | head -n 1)"
+          if [ -z "$APP_PATH" ]; then
+            echo "::error::No .app bundle found after iOS build"
+            exit 1
+          fi
+
+          echo "APP_PATH=$APP_PATH" >> "$GITHUB_ENV"
+      - name: Extract iOS Build Metadata
+        id: meta
+        shell: bash
+        run: |
+          set -euo pipefail
+          PLIST_PATH="$APP_PATH/Info.plist"
+          python3 - "$PLIST_PATH" >> "$GITHUB_OUTPUT" <<'PY'
+          import plistlib
+          import re
+          import sys
+
+          with open(sys.argv[1], "rb") as f:
+              info = plistlib.load(f)
+
+          version = str(info.get("CFBundleShortVersionString", "")).strip()
+          build = str(info.get("CFBundleVersion", "")).strip()
+          bundle_id = str(info.get("CFBundleIdentifier", "")).strip()
+          if not version or not build or not bundle_id:
+              raise SystemExit("Missing iOS build metadata")
+
+          build_name = f"{version}({build})"
+          build_slug = re.sub(r"[^A-Za-z0-9._-]+", "-", build_name).strip("-").lower() or "unknown-build"
+          print(f"build_name={build_name}")
+          print(f"build_slug={build_slug}")
+          print(f"bundle_id={bundle_id}")
+          print("archive_path=example-ci-build.tar.gz")
+          PY
+      - name: Archive Built .app
+        shell: bash
+        run: |
+          set -euo pipefail
+          ARCHIVE_PATH="$RUNNER_TEMP/example-ci-build.tar.gz"
+          tar -czf "$ARCHIVE_PATH" -C "$(dirname "$APP_PATH")" "$(basename "$APP_PATH")"
+          echo "ARCHIVE_PATH=$ARCHIVE_PATH" >> "$GITHUB_ENV"
+      - name: Prepare Artifact Metadata
+        id: artifact
+        shell: bash
+        run: |
+          echo "artifact_name=ios-app-${{ steps.meta.outputs.build_slug }}-${{ github.run_id }}-${{ github.run_attempt }}" >> "$GITHUB_OUTPUT"
+      - name: Upload Built iOS App Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.artifact.outputs.artifact_name }}
+          path: ${{ env.ARCHIVE_PATH }}
+          if-no-files-found: error
+
+  e2e_tests:
+    name: E2E Tests (iOS + Maestro) • ${{ needs.resolve_ios_build_meta.outputs.build_name }}
+    runs-on: macos-15
+    needs:
+      - test
+      - resolve_ios_build_meta
+    env:
+      IOS_BUILD_NAME: ${{ needs.resolve_ios_build_meta.outputs.build_name }}
+      IOS_BUILD_SLUG: ${{ needs.resolve_ios_build_meta.outputs.build_slug }}
+      APP_BUNDLE_ID: ${{ needs.resolve_ios_build_meta.outputs.bundle_id }}
+      IOS_ARCHIVE_PATH: ${{ needs.resolve_ios_build_meta.outputs.archive_path }}
+      IOS_BUILD_ARTIFACT_NAME: ${{ needs.resolve_ios_build_meta.outputs.artifact_name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Xcode 26.2
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: "26.2"
+      - name: Install Maestro CLI
+        run: |
+          curl -Ls "https://get.maestro.mobile.dev" | bash
+          echo "PATH=$HOME/.maestro/bin:$PATH" >> "$GITHUB_ENV"
+          echo "MAESTRO_DRIVER_STARTUP_TIMEOUT=180000" >> "$GITHUB_ENV"
+      - name: Download Built iOS App Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.IOS_BUILD_ARTIFACT_NAME }}
+          path: ${{ runner.temp }}/ios-build-artifact
+      - name: Boot and Activate iOS Simulator
+        shell: bash
+        run: |
+          set -euo pipefail
+          TARGET_DEVICE="iPhone 17 Pro"
+          TARGET_IOS_VERSION="26.2"
+          RESOLVED_ENV="$RUNNER_TEMP/simulator-resolved.env"
+
+          TARGET_DEVICE="$TARGET_DEVICE" TARGET_IOS_VERSION="$TARGET_IOS_VERSION" python3 - "$RESOLVED_ENV" <<'PY'
+          import json
+          import os
+          import subprocess
+          import sys
+
+          target_device = os.environ["TARGET_DEVICE"]
+          target_ios_version = os.environ["TARGET_IOS_VERSION"]
+          data = json.loads(subprocess.check_output(["xcrun", "simctl", "list", "--json"], text=True))
+
+          runtime_id = None
+          for runtime in data.get("runtimes", []):
+              if not runtime.get("isAvailable", False):
+                  continue
+              name = runtime.get("name", "")
+              version = runtime.get("version", "")
+              identifier = runtime.get("identifier", "")
+              if (name == f"iOS {target_ios_version}" or version == target_ios_version) and identifier.startswith("com.apple.CoreSimulator.SimRuntime.iOS-"):
+                  runtime_id = identifier
+                  break
+
+          if not runtime_id:
+              print(f"::error::Missing iOS runtime {target_ios_version} on this runner")
+              sys.exit(1)
+
+          device_type_id = None
+          for device_type in data.get("devicetypes", []):
+              if device_type.get("name") == target_device:
+                  device_type_id = device_type.get("identifier")
+                  break
+
+          if not device_type_id:
+              print(f"::error::Missing simulator device type {target_device} on this runner")
+              sys.exit(1)
+
+          simulator_udid = ""
+          for device in data.get("devices", {}).get(runtime_id, []):
+              if device.get("name") == target_device and device.get("isAvailable", True):
+                  simulator_udid = device.get("udid", "")
+                  if simulator_udid:
+                      break
+
+          with open(sys.argv[1], "w", encoding="utf-8") as f:
+              f.write(f"RUNTIME_ID={runtime_id}\n")
+              f.write(f"DEVICE_TYPE_ID={device_type_id}\n")
+              f.write(f"SIMULATOR_UDID={simulator_udid}\n")
+          PY
+
+          # shellcheck disable=SC1090
+          source "$RESOLVED_ENV"
+          cat "$RESOLVED_ENV" >> "$GITHUB_ENV"
+
+          if [ -z "$SIMULATOR_UDID" ]; then
+            SIMULATOR_UDID="$(xcrun simctl create "CI-${TARGET_DEVICE// /-}" "$DEVICE_TYPE_ID" "$RUNTIME_ID")"
+          fi
+
+          echo "SIMULATOR_UDID=$SIMULATOR_UDID" >> "$GITHUB_ENV"
+          xcrun simctl shutdown "$SIMULATOR_UDID" || true
+          xcrun simctl boot "$SIMULATOR_UDID"
+          xcrun simctl bootstatus "$SIMULATOR_UDID" -b
+          sleep 30
+      - name: Extract .app from Archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          ARTIFACT_DIR="$RUNNER_TEMP/ios-build-artifact"
+          ARCHIVE_PATH="$ARTIFACT_DIR/$IOS_ARCHIVE_PATH"
+
+          tar -xzf "$ARCHIVE_PATH" -C "$ARTIFACT_DIR"
+          APP_PATH="$(find "$ARTIFACT_DIR" -maxdepth 3 -type d -name '*.app' | head -n 1)"
+          if [ -z "$APP_PATH" ]; then
+            echo "::error::No .app bundle found after extracting $ARCHIVE_PATH"
+            exit 1
+          fi
+
+          echo "APP_PATH=$APP_PATH" >> "$GITHUB_ENV"
+      - name: Publish Build Metadata
+        run: |
+          {
+            echo "### Maestro iOS Build Metadata"
+            echo "- Build name: \`$IOS_BUILD_NAME\`"
+            echo "- Bundle ID: \`$APP_BUNDLE_ID\`"
+            echo "- Build artifact: \`$IOS_BUILD_ARTIFACT_NAME\`"
+            echo "- App path: \`$APP_PATH\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Validate Maestro Flow appIds
+        shell: bash
+        run: |
+          set -euo pipefail
+          FLOW_DIR="example/.maestro"
+          FLOW_FILES=( "$FLOW_DIR"/*.yaml )
+          if [ "${FLOW_FILES[0]}" = "$FLOW_DIR/*.yaml" ]; then
+            echo "::error::No Maestro flow files found in $FLOW_DIR"
+            exit 1
+          fi
+
+          for flow in "${FLOW_FILES[@]}"; do
+            FLOW_APP_ID="$(awk -F: '/^appId:/ {gsub(/[" ]/, "", $2); print $2; exit}' "$flow")"
+            if [ -z "$FLOW_APP_ID" ]; then
+              echo "::error::Missing appId in Maestro flow $flow"
+              exit 1
+            fi
+            if [ "$FLOW_APP_ID" != "$APP_BUNDLE_ID" ]; then
+              echo "::error::Maestro flow appId ($FLOW_APP_ID) in $flow does not match built app bundle id ($APP_BUNDLE_ID)"
+              exit 1
+            fi
+          done
+      - name: Install .app on Simulator
+        run: xcrun simctl install "$SIMULATOR_UDID" "$APP_PATH"
+      - name: Launch Application
+        shell: bash
+        run: |
+          set -euo pipefail
+          xcrun simctl launch "$SIMULATOR_UDID" "$APP_BUNDLE_ID"
+          sleep 15
+
+          if ! xcrun simctl spawn "$SIMULATOR_UDID" launchctl list | grep -q "$APP_BUNDLE_ID"; then
+            APP_PROCESS_NAME="$(basename "$APP_PATH" .app)"
+            echo "::error::App ($APP_BUNDLE_ID) is not running after launch. Dumping recent simulator logs."
+            xcrun simctl spawn "$SIMULATOR_UDID" log show --last 3m --style compact --predicate "process == \"$APP_PROCESS_NAME\" OR eventMessage CONTAINS[c] \"$APP_BUNDLE_ID\"" | tail -n 200 || true
+            exit 1
+          fi
+
+          sleep 10
+      - name: Run Maestro Tests
+        run: maestro test example/.maestro
+      - name: Upload Maestro Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: maestro-screenshots-${{ needs.resolve_ios_build_meta.outputs.build_slug }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ~/.maestro/tests/
+          if-no-files-found: warn

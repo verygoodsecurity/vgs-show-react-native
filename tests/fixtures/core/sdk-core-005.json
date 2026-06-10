@@ -1,0 +1,94 @@
+{
+  "id": "SDK-CORE-005",
+  "description": "A PDF-view subscribe/unsubscribe sequence updates `subscribedPDFViews` and `subscribedViews`, ignores duplicate subscribe of the same instance, and `unsubscribeAllViews()` clears all tracked PDF views.",
+  "input": {
+    "operation": "runVgsShowSubscriptionSequence",
+    "viewKind": "pdf",
+    "operations": [
+      {
+        "action": "subscribe",
+        "viewId": "pdf1"
+      },
+      {
+        "action": "subscribe",
+        "viewId": "pdf2"
+      },
+      {
+        "action": "subscribe",
+        "viewId": "pdf2"
+      },
+      {
+        "action": "unsubscribe",
+        "viewId": "pdf2"
+      },
+      {
+        "action": "unsubscribe",
+        "viewId": "pdf1"
+      },
+      {
+        "action": "subscribe",
+        "viewId": "pdf1"
+      },
+      {
+        "action": "subscribe",
+        "viewId": "pdf2"
+      },
+      {
+        "action": "unsubscribeAllViews"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "perStep": [
+      {
+        "afterOperation": 0,
+        "subscribedLabels": 0,
+        "subscribedViews": 0,
+        "subscribedPDFViews": 0
+      },
+      {
+        "afterOperation": 1,
+        "subscribedLabels": 0,
+        "subscribedViews": 1,
+        "subscribedPDFViews": 1
+      },
+      {
+        "afterOperation": 2,
+        "subscribedLabels": 0,
+        "subscribedViews": 2,
+        "subscribedPDFViews": 2
+      },
+      {
+        "afterOperation": 3,
+        "subscribedLabels": 0,
+        "subscribedViews": 2,
+        "subscribedPDFViews": 2
+      },
+      {
+        "afterOperation": 4,
+        "subscribedLabels": 0,
+        "subscribedViews": 1,
+        "subscribedPDFViews": 1
+      },
+      {
+        "afterOperation": 5,
+        "subscribedLabels": 0,
+        "subscribedViews": 0,
+        "subscribedPDFViews": 0
+      },
+      {
+        "afterOperation": 7,
+        "subscribedLabels": 0,
+        "subscribedViews": 2,
+        "subscribedPDFViews": 2
+      },
+      {
+        "afterOperation": 8,
+        "subscribedLabels": 0,
+        "subscribedViews": 0,
+        "subscribedPDFViews": 0
+      }
+    ]
+  }
+}

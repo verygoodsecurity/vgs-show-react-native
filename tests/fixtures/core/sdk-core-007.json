@@ -1,0 +1,16 @@
+{
+  "id": "SDK-CORE-007",
+  "description": "Assigning `customHeaders` stores the provided dictionary immediately and reading the property back returns the same key/value pair.",
+  "input": {
+    "operation": "setCustomHeadersAndReadBack",
+    "customHeaders": {
+      "costom-header": "custom header value"
+    }
+  },
+  "expected": {
+    "outcome": "success",
+    "customHeaders": {
+      "costom-header": "custom header value"
+    }
+  }
+}

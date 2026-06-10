@@ -1,0 +1,36 @@
+{
+  "id": "SDK-TXT-014",
+  "description": "Text-change wiring updates the label's revealed value and fires the value-changed callback on direct value assignment and on successful text decode handling.",
+  "input": {
+    "operation": "simulateTextChangeCallbacks",
+    "cases": [
+      {
+        "mode": "labelCallbackWiring",
+        "inputValue": "test"
+      },
+      {
+        "mode": "modelValueAssignment",
+        "inputValue": "Test String"
+      },
+      {
+        "mode": "modelHandleSuccess",
+        "decodedText": "Test String"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "perCase": [
+      {
+        "callbackFired": true,
+        "revealedRawText": "test"
+      },
+      {
+        "callbackFired": true
+      },
+      {
+        "callbackFired": true
+      }
+    ]
+  }
+}

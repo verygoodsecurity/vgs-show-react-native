@@ -1,0 +1,16 @@
+{
+  "id": "SDK-PDF-004",
+  "description": "The PDF-view model's success path fires the value-changed callback when raw PDF bytes arrive through `handleDecodingResult(.success(.rawData(...)))`.",
+  "input": {
+    "operation": "simulatePdfDocumentChangeCallback",
+    "rawDataBase64": "AAAAAAA="
+  },
+  "expected": {
+    "outcome": "success",
+    "callbackFired": true,
+    "content": {
+      "kind": "rawData",
+      "dataBase64": "AAAAAAA="
+    }
+  }
+}

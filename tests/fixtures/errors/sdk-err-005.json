@@ -1,0 +1,20 @@
+{
+  "id": "SDK-ERR-005",
+  "description": "Encoding a payload that cannot be represented as JSON emits VGSShowError(code=1404, type=invalidJSONPayload). The case uses NaN as the canonical JavaScript reject value.",
+  "input": {
+    "operation": "encodeJsonPayload",
+    "payload": {
+      "key": {
+        "$nan": true
+      }
+    }
+  },
+  "expected": {
+    "outcome": "failure",
+    "error": {
+      "code": 1404,
+      "type": "invalidJSONPayload",
+      "message": "Payload is not valid JSON"
+    }
+  }
+}

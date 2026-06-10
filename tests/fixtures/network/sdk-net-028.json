@@ -1,0 +1,35 @@
+{
+  "id": "SDK-NET-028",
+  "description": "Request path joining appends the request path to the base URL consistently for leading and trailing slashes.",
+  "input": {
+    "operation": "joinRequestPath",
+    "cases": [
+      {
+        "baseUrl": "https://tenant.sandbox.verygoodproxy.com",
+        "path": "post"
+      },
+      {
+        "baseUrl": "https://tenant.sandbox.verygoodproxy.com/",
+        "path": "post"
+      },
+      {
+        "baseUrl": "https://tenant.sandbox.verygoodproxy.com",
+        "path": "/post"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "perCase": [
+      {
+        "url": "https://tenant.sandbox.verygoodproxy.com/post"
+      },
+      {
+        "url": "https://tenant.sandbox.verygoodproxy.com/post"
+      },
+      {
+        "url": "https://tenant.sandbox.verygoodproxy.com/post"
+      }
+    ]
+  }
+}

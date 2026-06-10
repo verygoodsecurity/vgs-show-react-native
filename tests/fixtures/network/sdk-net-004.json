@@ -1,0 +1,122 @@
+{
+  "id": "SDK-NET-004",
+  "description": "Environment validation accepts sandbox, live, and Collect-compatible live regional suffixes. Other custom environment strings are rejected.",
+  "input": {
+    "operation": "regionalEnvironmentStringValid",
+    "cases": [
+      {
+        "env": "sandbox"
+      },
+      {
+        "env": "live"
+      },
+      {
+        "env": "live-eu1"
+      },
+      {
+        "env": "LIVE-UA-0505"
+      },
+      {
+        "env": "sandbox-ua5"
+      },
+      {
+        "env": "sandbox-ua-0505"
+      },
+      {
+        "env": "live-"
+      },
+      {
+        "env": "live/eu"
+      },
+      {
+        "env": "liv"
+      },
+      {
+        "env": "random-ua1"
+      },
+      {
+        "env": "random-ua-0505"
+      },
+      {
+        "env": "live-"
+      },
+      {
+        "env": "live.com"
+      },
+      {
+        "env": "live/eu"
+      },
+      {
+        "env": "sandox/us-5050"
+      },
+      {
+        "env": "sanbox?web=google.com"
+      },
+      {
+        "env": ""
+      },
+      {
+        "env": " "
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "mixed",
+    "perCase": [
+      {
+        "isValid": true
+      },
+      {
+        "isValid": true
+      },
+      {
+        "isValid": true
+      },
+      {
+        "isValid": true
+      },
+      {
+        "isValid": false
+      },
+      {
+        "isValid": false
+      },
+      {
+        "isValid": false
+      },
+      {
+        "isValid": false
+      },
+      {
+        "isValid": false
+      },
+      {
+        "isValid": false
+      },
+      {
+        "isValid": false
+      },
+      {
+        "isValid": false
+      },
+      {
+        "isValid": false
+      },
+      {
+        "isValid": false
+      },
+      {
+        "isValid": false
+      },
+      {
+        "isValid": false
+      },
+      {
+        "isValid": false
+      },
+      {
+        "isValid": false
+      }
+    ]
+  }
+}

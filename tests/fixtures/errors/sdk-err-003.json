@@ -1,0 +1,19 @@
+{
+  "id": "SDK-ERR-003",
+  "description": "Text decoder with a contentPath absent from the resolved JSON emits VGSShowError(code=1403, type=fieldNotFound).",
+  "input": {
+    "operation": "textDecode",
+    "contentPath": "path",
+    "json": {
+      "invalidPath": "error text"
+    }
+  },
+  "expected": {
+    "outcome": "failure",
+    "error": {
+      "code": 1403,
+      "type": "fieldNotFound",
+      "message": "Field not found in specified path"
+    }
+  }
+}

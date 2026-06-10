@@ -1,0 +1,15 @@
+{
+  "id": "SDK-NET-021",
+  "description": "When requestOptions.requestTimeoutInterval is absent, RN applies the explicit 60 second default timeout.",
+  "input": {
+    "operation": "buildRequestAndReadTimeout",
+    "baseUrl": "https://testID.sandbox.verygoodproxy.com",
+    "request": {
+      "path": "post"
+    }
+  },
+  "expected": {
+    "outcome": "success",
+    "timeoutSeconds": 60
+  }
+}

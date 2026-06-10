@@ -1,0 +1,18 @@
+{
+  "id": "SDK-NET-016",
+  "description": "Omitting method from request input produces an outgoing POST request.",
+  "input": {
+    "operation": "buildRequestAndReadMethod",
+    "baseUrl": "https://testID.sandbox.verygoodproxy.com",
+    "request": {
+      "path": "post",
+      "payload": {
+        "key": "value"
+      }
+    }
+  },
+  "expected": {
+    "outcome": "success",
+    "method": "POST"
+  }
+}

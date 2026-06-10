@@ -1,0 +1,21 @@
+{
+  "id": "SDK-ERR-002",
+  "description": "Raw-data decoding of a non-JSON UTF-8 body emits VGSShowError(code=1402, type=responseIsInvalidJSON). The assertion pins the stable code, type, and SDK message.",
+  "input": {
+    "operation": "rawDataToJson",
+    "rawBody": {
+      "$utf8": "Invalid JSON"
+    }
+  },
+  "expected": {
+    "outcome": "failure",
+    "error": {
+      "code": 1402,
+      "type": "responseIsInvalidJSON",
+      "message": "Response body is not valid JSON"
+    },
+    "comparator": {
+      "messageStringEquality": "skip"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "id": "SDK-CORE-006",
+  "description": "Subscribing the exact same PDF view instance three times leaves exactly one subscribed PDF view and one total subscribed view.",
+  "input": {
+    "operation": "runVgsShowSubscriptionSequence",
+    "viewKind": "pdf",
+    "operations": [
+      {
+        "action": "subscribe",
+        "viewId": "pdf1"
+      },
+      {
+        "action": "subscribe",
+        "viewId": "pdf1"
+      },
+      {
+        "action": "subscribe",
+        "viewId": "pdf1"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "subscribedLabels": 0,
+    "subscribedViews": 1,
+    "subscribedPDFViews": 1
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "id": "SDK-TXT-002",
+  "description": "When secure text mode is enabled, the default mask symbol is `*`, replacing the symbol with `🔥` or `X` re-renders the fully masked text with that symbol, and setting the symbol to the empty string falls back to the unmasked raw text.",
+  "input": {
+    "operation": "setSecureTextSymbolSequence",
+    "rawText": "Hello WORLD",
+    "operations": [
+      {
+        "action": "enableSecureText"
+      },
+      {
+        "action": "setSecureTextSymbol",
+        "value": "🔥"
+      },
+      {
+        "action": "setSecureTextSymbol",
+        "value": "X"
+      },
+      {
+        "action": "setSecureTextSymbol",
+        "value": ""
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "perStep": [
+      {
+        "afterOperation": 1,
+        "displayText": "***********"
+      },
+      {
+        "afterOperation": 2,
+        "displayText": "🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥"
+      },
+      {
+        "afterOperation": 3,
+        "displayText": "XXXXXXXXXXX"
+      },
+      {
+        "afterOperation": 4,
+        "displayText": "Hello WORLD"
+      }
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "id": "SDK-TXT-019",
+  "description": "Formatters execute in insertion order, so a second formatter can transform the output produced by the first.",
+  "input": {
+    "operation": "applyStackedTransformationRegexes",
+    "rawText": "4111111111111111",
+    "formatters": [
+      {
+        "pattern": "(\\d{4})(\\d{4})(\\d{4})(\\d{4})",
+        "template": "$1 $2 $3 $4"
+      },
+      {
+        "pattern": " ",
+        "flags": "g",
+        "template": "-"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "transformedText": "4111-1111-1111-1111",
+    "displayText": "4111-1111-1111-1111",
+    "hasFormatting": true
+  }
+}

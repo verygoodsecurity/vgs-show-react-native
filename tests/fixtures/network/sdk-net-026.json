@@ -1,0 +1,42 @@
+{
+  "id": "SDK-NET-026",
+  "description": "HTTP success maps to Promise resolve with { code }; failure maps to Promise reject with VGSShowError.",
+  "input": {
+    "operation": "simulateRequestOutcome",
+    "cases": [
+      {
+        "response": {
+          "kind": "http",
+          "status": 200,
+          "body": "{}"
+        }
+      },
+      {
+        "response": {
+          "kind": "http",
+          "status": 500,
+          "body": "{}"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "mixed",
+    "perCase": [
+      {
+        "promiseState": "resolved",
+        "value": {
+          "code": 200
+        }
+      },
+      {
+        "promiseState": "rejected",
+        "error": {
+          "code": 1400,
+          "type": "unexpectedResponseType",
+          "message": "Unexpected response type"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "id": "SDK-ANL-001",
+  "description": "Analytics session identity is UUID-shaped, stable across reads, shared across VGSShow instances in the same runtime, and reused by event payloads and request headers.",
+  "input": {
+    "operation": "inspectAnalyticsSessionRuntime"
+  },
+  "expected": {
+    "outcome": "success",
+    "firstMatchesUuidV4": true,
+    "secondMatchesUuidV4": true,
+    "stableAcrossReads": true,
+    "sharedAcrossInstances": true,
+    "payloadSessionMatchesRuntime": true
+  }
+}

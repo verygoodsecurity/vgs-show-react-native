@@ -1,0 +1,59 @@
+{
+  "id": "SDK-IMG-002",
+  "description": "`hasImage` is false before reveal, true after secure image bytes are present, false again when the image is removed, and `clear()` resets the view back to the empty state.",
+  "input": {
+    "operation": "runImagePresenceSequence",
+    "operations": [
+      {
+        "action": "readHasImage"
+      },
+      {
+        "action": "setSecureImagePresent",
+        "value": true
+      },
+      {
+        "action": "setSecureImagePresent",
+        "value": false
+      },
+      {
+        "action": "readHasImage"
+      },
+      {
+        "action": "setSecureImagePresent",
+        "value": true
+      },
+      {
+        "action": "clear"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "perStep": [
+      {
+        "afterOperation": 1,
+        "hasImage": false
+      },
+      {
+        "afterOperation": 2,
+        "hasImage": true
+      },
+      {
+        "afterOperation": 3,
+        "hasImage": false
+      },
+      {
+        "afterOperation": 4,
+        "hasImage": false
+      },
+      {
+        "afterOperation": 5,
+        "hasImage": true
+      },
+      {
+        "afterOperation": 6,
+        "hasImage": false
+      }
+    ]
+  }
+}

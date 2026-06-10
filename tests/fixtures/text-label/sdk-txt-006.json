@@ -1,0 +1,16 @@
+{
+  "id": "SDK-TXT-006",
+  "description": "Calling copy with format `raw` fires the label copy-finished delegate callback with the same format value.",
+  "input": {
+    "operation": "copyTextAndObserveCallback",
+    "format": "raw"
+  },
+  "expected": {
+    "outcome": "success",
+    "callbackFired": true,
+    "callback": {
+      "name": "labelCopyTextDidFinish",
+      "format": "raw"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "id": "SDK-ANL-014",
+  "description": "Logger defaults keep the SDK silent: level none, network debug off, and no entries emitted.",
+  "input": {
+    "operation": "inspectLoggerDefaults"
+  },
+  "expected": {
+    "outcome": "success",
+    "level": "none",
+    "isNetworkDebugEnabled": false,
+    "entryCount": 0
+  }
+}

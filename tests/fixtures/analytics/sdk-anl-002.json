@@ -1,0 +1,19 @@
+{
+  "id": "SDK-ANL-002",
+  "description": "Canonical analytics event names are preserved verbatim.",
+  "input": {
+    "operation": "inspectAnalyticsEventTypeCatalog"
+  },
+  "expected": {
+    "outcome": "success",
+    "eventTypes": {
+      "fieldInit": "Init",
+      "beforeSubmit": "BeforeSubmit",
+      "submit": "Submit",
+      "copy": "Copy to clipboard click",
+      "fieldUnsubscibe": "UnsubscribeField",
+      "setSecureTextRange": "SetSecureTextRange",
+      "contentRendering": "ContentRendering"
+    }
+  }
+}

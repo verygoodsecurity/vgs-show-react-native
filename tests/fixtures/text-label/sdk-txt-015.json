@@ -1,0 +1,46 @@
+{
+  "id": "SDK-TXT-015",
+  "description": "Per-view decode failure wiring fires the reveal-error callback/delegate with the same `VGSShowError` instance that the failing path received.",
+  "input": {
+    "operation": "simulateRevealErrorCallbacks",
+    "cases": [
+      {
+        "mode": "labelDelegateWiring",
+        "error": {
+          "code": 1403,
+          "type": "fieldNotFound",
+          "message": "Field not found in specified path"
+        }
+      },
+      {
+        "mode": "modelHandleFailure",
+        "error": {
+          "code": 1404,
+          "type": "invalidJSONPayload",
+          "message": "Payload is not valid JSON"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "perCase": [
+      {
+        "callbackFired": true,
+        "error": {
+          "code": 1403,
+          "type": "fieldNotFound",
+          "message": "Field not found in specified path"
+        }
+      },
+      {
+        "callbackFired": true,
+        "error": {
+          "code": 1404,
+          "type": "invalidJSONPayload",
+          "message": "Payload is not valid JSON"
+        }
+      }
+    ]
+  }
+}

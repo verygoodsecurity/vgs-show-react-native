@@ -1,0 +1,23 @@
+{
+  "id": "SDK-ANL-003",
+  "description": "Analytics payloads include the required base fields and align with the outgoing vgs-client header's source/session components.",
+  "input": {
+    "operation": "buildAnalyticsBasePayload"
+  },
+  "expected": {
+    "outcome": "success",
+    "source": "show-rnSDK",
+    "version": "1.0.0",
+    "hasIsoLocalTimestamp": true,
+    "uaKeys": [
+      "dependencyManager",
+      "device",
+      "deviceLocale",
+      "deviceModel",
+      "osVersion",
+      "platform"
+    ],
+    "sessionIdMatchesHeader": true,
+    "headerSourceMatchesPayload": true
+  }
+}

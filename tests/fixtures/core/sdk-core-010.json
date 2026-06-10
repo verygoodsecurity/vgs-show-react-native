@@ -1,0 +1,22 @@
+{
+  "id": "SDK-CORE-010",
+  "description": "Each VGSShow instance receives a UUID-shaped formId that is stable for that instance and distinct across separately constructed instances.",
+  "input": {
+    "operation": "readFormIdStability",
+    "instances": [
+      {
+        "id": "tenant1"
+      },
+      {
+        "id": "tenant2"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "firstMatchesUuidV4": true,
+    "secondMatchesUuidV4": true,
+    "firstStableAcrossReads": true,
+    "uniqueAcrossInstances": true
+  }
+}

@@ -1,0 +1,38 @@
+appId: "com.verygoodsecurity.vgsshowreactnative.example"
+---
+- launchApp:
+    clearState: true
+- tapOn:
+    id: "demo-entry-reveal-card-details"
+- tapOn:
+    id: "collect-card-holder-input"
+- inputText: "Joe Business"
+- tapOn:
+    id: "collect-card-number-input"
+- inputText: "4111111111111111"
+- tapOn:
+    id: "collect-card-expiration-input"
+- inputText: "122028"
+- tapOn:
+    id: "collect-dismiss-keyboard-target"
+- scroll
+- tapOn:
+    id: "collect-create-aliases-button"
+- assertVisible:
+    id: "collect-status-text"
+    text: "Aliases created. Open the Show tab to reveal them."
+- tapOn:
+    id: "reveal-card-tab-show"
+- tapOn:
+    id: "show-reveal-button"
+- assertVisible:
+    id: "show-status-text"
+    text: "Reveal completed."
+- tapOn:
+    id: "show-clear-button"
+- assertVisible:
+    id: "show-status-text"
+    text: "Cleared the current reveal view state."
+- assertVisible: "XXXXXXXXXXXXXXXXXXX"
+- assertVisible: "XXXX XXXX XXXX XXXX"
+- assertVisible: "XX/XX"

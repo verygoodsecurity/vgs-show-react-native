@@ -1,0 +1,26 @@
+{
+  "id": "SDK-TXT-022",
+  "description": "Calling clearText() after a successful reveal clears displayed text, restores placeholder visibility, and fires onTextChange once without emitting analytics.",
+  "input": {
+    "operation": "simulateTextComponentClearTextCallback",
+    "viewId": "cardNumberLabel",
+    "contentPath": "card.number",
+    "placeholder": "Card number",
+    "revealedRawText": "4111111111111111"
+  },
+  "expected": {
+    "outcome": "success",
+    "beforeClear": {
+      "displayText": "4111111111111111",
+      "placeholderVisible": false,
+      "textChangeCount": 1
+    },
+    "afterClear": {
+      "displayText": null,
+      "placeholderVisible": true,
+      "textChangeCount": 2,
+      "lastTextChangeArgsLength": 0
+    },
+    "analyticsPayloadCount": 0
+  }
+}

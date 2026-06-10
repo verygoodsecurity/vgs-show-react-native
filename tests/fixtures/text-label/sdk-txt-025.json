@@ -1,0 +1,26 @@
+{
+  "id": "SDK-TXT-025",
+  "description": "The text component's public ref surface exposes imperative actions and state booleans, but no getter or callback returns revealed text; accessibility label is null while content is revealed.",
+  "input": {
+    "operation": "inspectTextComponentAntiLeakSurface",
+    "viewId": "cardNumberLabel",
+    "contentPath": "card.number",
+    "placeholder": "Card number",
+    "revealedRawText": "4111111111111111"
+  },
+  "expected": {
+    "outcome": "success",
+    "refKeys": [
+      "addTransformationRegex",
+      "clearText",
+      "copyToClipboard",
+      "resetAllFormatters",
+      "setSecureText"
+    ],
+    "hasTextGetter": false,
+    "hasRawTextGetter": false,
+    "hasDisplayTextGetter": false,
+    "accessibilityLabel": null,
+    "callbackPayloadContainsRevealedText": false
+  }
+}

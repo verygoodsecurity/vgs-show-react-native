@@ -1,0 +1,12 @@
+{
+  "id": "SDK-CORE-001",
+  "description": "Constructing `VGSShow` with only an id defaults the environment to sandbox, so the derived base URL host contains the substring `sandbox`.",
+  "input": {
+    "operation": "constructVgsShowAndReadBaseUrlHost",
+    "id": "test"
+  },
+  "expected": {
+    "outcome": "success",
+    "baseUrlHostContains": "sandbox"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "SDK-PATH-001",
+  "description": "Text decoder resolves a flat single-segment contentPath in a flat JSON object and emits .success(.text(<value>)).",
+  "input": {
+    "operation": "textDecode",
+    "contentPath": "path",
+    "json": {
+      "path": "text to decode"
+    }
+  },
+  "expected": {
+    "outcome": "success",
+    "content": {
+      "kind": "text",
+      "text": "text to decode"
+    }
+  }
+}

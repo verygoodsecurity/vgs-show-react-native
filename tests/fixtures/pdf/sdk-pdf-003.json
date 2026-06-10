@@ -1,0 +1,61 @@
+{
+  "id": "SDK-PDF-003",
+  "description": "The PDF view defaults `displayMode` to `singlePageContinuous`, and its logical display settings round-trip through the public props for display mode, direction, auto-scales, book display, and page shadows.",
+  "input": {
+    "operation": "readPdfDisplayDefaultsAndApplyLogicalSettings",
+    "operations": [
+      {
+        "action": "readDefaults"
+      },
+      {
+        "action": "setDisplayMode",
+        "value": "twoUpContinuous"
+      },
+      {
+        "action": "setDisplayDirection",
+        "value": "horizontal"
+      },
+      {
+        "action": "setAutoScales",
+        "value": false
+      },
+      {
+        "action": "setDisplayAsBook",
+        "value": true
+      },
+      {
+        "action": "setPageShadowsEnabled",
+        "value": false
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "perStep": [
+      {
+        "afterOperation": 1,
+        "displayMode": "singlePageContinuous"
+      },
+      {
+        "afterOperation": 2,
+        "displayMode": "twoUpContinuous"
+      },
+      {
+        "afterOperation": 3,
+        "displayDirection": "horizontal"
+      },
+      {
+        "afterOperation": 4,
+        "autoScales": false
+      },
+      {
+        "afterOperation": 5,
+        "displayAsBook": true
+      },
+      {
+        "afterOperation": 6,
+        "pageShadowsEnabled": false
+      }
+    ]
+  }
+}

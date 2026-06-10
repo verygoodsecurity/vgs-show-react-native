@@ -1,0 +1,19 @@
+{
+  "id": "SDK-ANL-005",
+  "description": "Unsubscribing a previously subscribed label emits an unsubscribe analytics payload with the canonical event name and safe extraInfo only.",
+  "input": {
+    "operation": "simulateFieldUnsubscribeAnalytics",
+    "contentPath": "card.token"
+  },
+  "expected": {
+    "outcome": "success",
+    "payload": {
+      "type": "UnsubscribeField",
+      "status": "success",
+      "extraInfo": {
+        "contentPath": "card.token",
+        "field": "text"
+      }
+    }
+  }
+}

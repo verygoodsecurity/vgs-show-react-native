@@ -1,0 +1,30 @@
+{
+  "id": "SDK-IMG-004",
+  "description": "The image-view model's failure paths fire the error callback when decoding fails.",
+  "input": {
+    "operation": "simulateImageErrorCallbacks",
+    "cases": [
+      {
+        "mode": "modelHandleFailure",
+        "error": {
+          "code": 1404,
+          "type": "invalidJSONPayload",
+          "message": "Payload is not valid JSON"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "perCase": [
+      {
+        "callbackFired": true,
+        "error": {
+          "code": 1404,
+          "type": "invalidJSONPayload",
+          "message": "Payload is not valid JSON"
+        }
+      }
+    ]
+  }
+}

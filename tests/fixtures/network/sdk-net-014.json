@@ -1,0 +1,11 @@
+{
+  "id": "SDK-NET-014",
+  "description": "A freshly constructed `VGSShowRequestOptions` has `requestTimeoutInterval === undefined`, represented as `null` in this JSON case to convey absence.",
+  "input": {
+    "operation": "constructAndReadRequestTimeoutInterval"
+  },
+  "expected": {
+    "outcome": "success",
+    "requestTimeoutInterval": null
+  }
+}

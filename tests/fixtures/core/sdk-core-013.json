@@ -1,0 +1,63 @@
+{
+  "id": "SDK-CORE-013",
+  "description": "A valid 2xx JSON response resolves the request Promise even when one subscribed view fails to decode its contentPath.",
+  "input": {
+    "operation": "simulateCoreRequestPipeline",
+    "vgsShow": {
+      "id": "tenant",
+      "environment": "sandbox"
+    },
+    "views": [
+      {
+        "viewId": "label1",
+        "viewKind": "label",
+        "contentPath": "card.token",
+        "decodingContentMode": "text"
+      },
+      {
+        "viewId": "label2",
+        "viewKind": "label",
+        "contentPath": "card.missing",
+        "decodingContentMode": "text"
+      }
+    ],
+    "request": {
+      "path": "post"
+    },
+    "response": {
+      "kind": "http",
+      "status": 200,
+      "body": "{\"card\":{\"token\":\"tok_123\"}}"
+    }
+  },
+  "expected": {
+    "outcome": "success",
+    "promiseState": "resolved",
+    "requestResult": {
+      "code": 200
+    },
+    "perView": [
+      {
+        "viewId": "label1",
+        "state": "revealed",
+        "content": {
+          "kind": "text",
+          "text": "tok_123"
+        }
+      },
+      {
+        "viewId": "label2",
+        "state": "failed",
+        "error": {
+          "code": 1403,
+          "type": "fieldNotFound",
+          "message": "Field not found in specified path"
+        }
+      }
+    ],
+    "warningLogCount": 1,
+    "unrevealedContentPaths": [
+      "card.missing"
+    ]
+  }
+}

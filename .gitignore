@@ -1,15 +1,11 @@
-### Intellij ###
-.idea/
-
-### OSX ###
 .DS_Store
+lib/
+node_modules/
 
-### Emacs ###
-*~
-\#*\#
-/.emacs.desktop
-/.emacs.desktop.lock
-*.elc
-auto-save-list
-tramp
-.\#*
+# Override user's global *.json ignore for repo config and test fixtures.
+!package.json
+!package-lock.json
+!tsconfig.json
+!tsconfig.build.json
+!typedoc.json
+!tests/fixtures/**/*.json

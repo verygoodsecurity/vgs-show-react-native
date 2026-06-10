@@ -1,0 +1,41 @@
+{
+  "id": "SDK-TXT-001",
+  "description": "Setting `contentPath` stores the provided string on the label, and the label reports empty/non-empty state based on whether any secure text is currently rendered.",
+  "input": {
+    "operation": "configureTextLabelAndReadState",
+    "operations": [
+      {
+        "action": "setContentPath",
+        "value": "test.label"
+      },
+      {
+        "action": "setRenderedSecureText",
+        "value": "123"
+      },
+      {
+        "action": "setRenderedSecureText",
+        "value": ""
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "perStep": [
+      {
+        "afterOperation": 1,
+        "contentPath": "test.label",
+        "isEmpty": true
+      },
+      {
+        "afterOperation": 2,
+        "contentPath": "test.label",
+        "isEmpty": false
+      },
+      {
+        "afterOperation": 3,
+        "contentPath": "test.label",
+        "isEmpty": true
+      }
+    ]
+  }
+}

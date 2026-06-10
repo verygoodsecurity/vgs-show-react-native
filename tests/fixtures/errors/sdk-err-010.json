@@ -1,0 +1,29 @@
+{
+  "id": "SDK-ERR-010",
+  "description": "Image rendering with valid base64 that decodes to non-image bytes fires the image-error callback with `invalidImageData` and leaves `hasImage` false.",
+  "input": {
+    "operations": [
+      {
+        "op": "constructVGSShowImage"
+      },
+      {
+        "op": "setRevealedImageContent",
+        "imageBytesBase64": "aGVsbG8="
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "callbackFired",
+    "callback": "onImageError",
+    "callbackArgs": {
+      "error": {
+        "code": 1407,
+        "type": "invalidImageData",
+        "message": "Cannot render Image with invalid data"
+      }
+    },
+    "state": {
+      "hasImage": false
+    }
+  }
+}

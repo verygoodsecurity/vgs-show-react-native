@@ -1,0 +1,20 @@
+{
+  "id": "SDK-NET-015",
+  "description": "RN request input normalizes to the Promise-only request contract: path is required, method defaults to POST, payload defaults to null, and requestOptions defaults to null.",
+  "input": {
+    "operation": "normalizeRequestInput",
+    "request": {
+      "path": "/post"
+    }
+  },
+  "expected": {
+    "outcome": "success",
+    "returnsPromise": true,
+    "normalized": {
+      "path": "/post",
+      "method": "POST",
+      "payload": null,
+      "requestOptions": null
+    }
+  }
+}

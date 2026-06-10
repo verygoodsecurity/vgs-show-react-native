@@ -1,0 +1,92 @@
+{
+  "id": "SDK-STATE-001",
+  "description": "The shared content state machine performs deterministic idle/loading/revealed/failed/cleared transitions and clears stale content when loading or failing.",
+  "input": {
+    "operation": "simulateContentStateTransitions",
+    "kind": "text",
+    "operations": [
+      {
+        "action": "read"
+      },
+      {
+        "action": "startLoading"
+      },
+      {
+        "action": "reveal",
+        "content": {
+          "kind": "text",
+          "text": "tok_123"
+        }
+      },
+      {
+        "action": "clear"
+      },
+      {
+        "action": "startLoading"
+      },
+      {
+        "action": "fail",
+        "error": {
+          "type": "fieldNotFound"
+        }
+      },
+      {
+        "action": "clear"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "perStep": [
+      {
+        "afterOperation": 1,
+        "state": "idle",
+        "hasContent": false
+      },
+      {
+        "afterOperation": 2,
+        "state": "loading",
+        "hasContent": false
+      },
+      {
+        "afterOperation": 3,
+        "state": "revealed",
+        "hasContent": true
+      },
+      {
+        "afterOperation": 4,
+        "state": "cleared",
+        "hasContent": false
+      },
+      {
+        "afterOperation": 5,
+        "state": "loading",
+        "hasContent": false
+      },
+      {
+        "afterOperation": 6,
+        "state": "failed",
+        "hasContent": false,
+        "error": {
+          "code": 1403,
+          "type": "fieldNotFound",
+          "message": "Field not found in specified path"
+        }
+      },
+      {
+        "afterOperation": 7,
+        "state": "cleared",
+        "hasContent": false
+      }
+    ],
+    "callbackOrder": [
+      "state:loading",
+      "state:revealed",
+      "state:cleared",
+      "state:loading",
+      "state:failed",
+      "error:fieldNotFound",
+      "state:cleared"
+    ]
+  }
+}

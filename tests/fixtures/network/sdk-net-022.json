@@ -1,0 +1,44 @@
+{
+  "id": "SDK-NET-022",
+  "description": "Tenant IDs must be non-empty alphanumeric strings.",
+  "input": {
+    "operation": "isValidTenantId",
+    "cases": [
+      {
+        "id": "tnt123"
+      },
+      {
+        "id": "ABC999"
+      },
+      {
+        "id": ""
+      },
+      {
+        "id": "tenant-1"
+      },
+      {
+        "id": "tenant_1"
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "mixed",
+    "perCase": [
+      {
+        "isValid": true
+      },
+      {
+        "isValid": true
+      },
+      {
+        "isValid": false
+      },
+      {
+        "isValid": false
+      },
+      {
+        "isValid": false
+      }
+    ]
+  }
+}

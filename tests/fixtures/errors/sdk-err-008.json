@@ -1,0 +1,27 @@
+{
+  "id": "SDK-ERR-008",
+  "description": "Constructing a canonical RN `VGSShowError` preserves the stable public shape: numeric `code`, string `type`, user-facing `message`, and optional `extraInfo` payload.",
+  "input": {
+    "operation": "constructVgsShowError",
+    "error": {
+      "code": 1403,
+      "type": "fieldNotFound",
+      "message": "Field not found in specified path",
+      "extraInfo": {
+        "context": "unit-test"
+      }
+    }
+  },
+  "expected": {
+    "outcome": "success",
+    "error": {
+      "code": 1403,
+      "type": "fieldNotFound",
+      "message": "Field not found in specified path",
+      "domain": "vgsshow.sdk",
+      "extraInfo": {
+        "context": "unit-test"
+      }
+    }
+  }
+}

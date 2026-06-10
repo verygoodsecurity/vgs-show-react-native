@@ -1,0 +1,29 @@
+{
+  "id": "SDK-ERR-007",
+  "description": "Setting revealed PDF content to empty bytes fails PDF construction, fires the document-error callback with VGSShowError(code=1406, type=invalidPDFData), and leaves document state empty.",
+  "input": {
+    "operations": [
+      {
+        "op": "constructVGSShowPdf"
+      },
+      {
+        "op": "setRevealedPdfContent",
+        "pdfBytesBase64": ""
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "callbackFired",
+    "callback": "onDocumentError",
+    "callbackArgs": {
+      "error": {
+        "code": 1406,
+        "type": "invalidPDFData",
+        "message": "Cannot render PDF with invalid data"
+      }
+    },
+    "state": {
+      "hasDocument": false
+    }
+  }
+}

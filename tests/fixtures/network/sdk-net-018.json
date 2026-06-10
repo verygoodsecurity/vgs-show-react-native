@@ -1,0 +1,201 @@
+{
+  "id": "SDK-NET-018",
+  "description": "Extended JSON payload validation reject table required by OPEN_QUESTIONS.md #14. Non-JSON JS values reject with invalidJSONPayload before HTTP dispatch.",
+  "input": {
+    "operation": "validateJsonPayloadCases",
+    "cases": [
+      {
+        "label": "undefined",
+        "payload": {
+          "key": {
+            "$undefined": true
+          }
+        }
+      },
+      {
+        "label": "function",
+        "payload": {
+          "key": {
+            "$function": true
+          }
+        }
+      },
+      {
+        "label": "symbol",
+        "payload": {
+          "key": {
+            "$symbol": "x"
+          }
+        }
+      },
+      {
+        "label": "bigint",
+        "payload": {
+          "key": {
+            "$bigint": "1"
+          }
+        }
+      },
+      {
+        "label": "date",
+        "payload": {
+          "key": {
+            "$date": "2026-04-24T00:00:00.000Z"
+          }
+        }
+      },
+      {
+        "label": "typed-array",
+        "payload": {
+          "key": {
+            "$uint8Array": [
+              1,
+              2,
+              3
+            ]
+          }
+        }
+      },
+      {
+        "label": "map",
+        "payload": {
+          "key": {
+            "$map": [
+              [
+                "a",
+                1
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "label": "set",
+        "payload": {
+          "key": {
+            "$set": [
+              1
+            ]
+          }
+        }
+      },
+      {
+        "label": "nan",
+        "payload": {
+          "key": {
+            "$nan": true
+          }
+        }
+      },
+      {
+        "label": "infinity",
+        "payload": {
+          "key": {
+            "$infinity": true
+          }
+        }
+      },
+      {
+        "label": "array-top-level",
+        "payload": [
+          1,
+          2,
+          3
+        ]
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "allFailure",
+    "perCase": [
+      {
+        "requestDispatched": false,
+        "error": {
+          "code": 1404,
+          "type": "invalidJSONPayload",
+          "message": "Payload is not valid JSON"
+        }
+      },
+      {
+        "requestDispatched": false,
+        "error": {
+          "code": 1404,
+          "type": "invalidJSONPayload",
+          "message": "Payload is not valid JSON"
+        }
+      },
+      {
+        "requestDispatched": false,
+        "error": {
+          "code": 1404,
+          "type": "invalidJSONPayload",
+          "message": "Payload is not valid JSON"
+        }
+      },
+      {
+        "requestDispatched": false,
+        "error": {
+          "code": 1404,
+          "type": "invalidJSONPayload",
+          "message": "Payload is not valid JSON"
+        }
+      },
+      {
+        "requestDispatched": false,
+        "error": {
+          "code": 1404,
+          "type": "invalidJSONPayload",
+          "message": "Payload is not valid JSON"
+        }
+      },
+      {
+        "requestDispatched": false,
+        "error": {
+          "code": 1404,
+          "type": "invalidJSONPayload",
+          "message": "Payload is not valid JSON"
+        }
+      },
+      {
+        "requestDispatched": false,
+        "error": {
+          "code": 1404,
+          "type": "invalidJSONPayload",
+          "message": "Payload is not valid JSON"
+        }
+      },
+      {
+        "requestDispatched": false,
+        "error": {
+          "code": 1404,
+          "type": "invalidJSONPayload",
+          "message": "Payload is not valid JSON"
+        }
+      },
+      {
+        "requestDispatched": false,
+        "error": {
+          "code": 1404,
+          "type": "invalidJSONPayload",
+          "message": "Payload is not valid JSON"
+        }
+      },
+      {
+        "requestDispatched": false,
+        "error": {
+          "code": 1404,
+          "type": "invalidJSONPayload",
+          "message": "Payload is not valid JSON"
+        }
+      },
+      {
+        "requestDispatched": false,
+        "error": {
+          "code": 1404,
+          "type": "invalidJSONPayload",
+          "message": "Payload is not valid JSON"
+        }
+      }
+    ]
+  }
+}

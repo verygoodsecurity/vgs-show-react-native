@@ -1,0 +1,56 @@
+{
+  "id": "SDK-NET-023",
+  "description": "Invalid configuration fails before HTTP dispatch with invalidConfigurationURL.",
+  "input": {
+    "operation": "requestWithInvalidConfiguration",
+    "cases": [
+      {
+        "vgsShow": {
+          "id": "",
+          "environment": "sandbox"
+        }
+      },
+      {
+        "vgsShow": {
+          "id": "tenant-1",
+          "environment": "sandbox"
+        }
+      },
+      {
+        "vgsShow": {
+          "id": "tenant1",
+          "environment": "qa"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "allFailure",
+    "perCase": [
+      {
+        "requestDispatched": false,
+        "error": {
+          "code": 1480,
+          "type": "invalidConfigurationURL",
+          "message": "VGS configuration URL is not valid"
+        }
+      },
+      {
+        "requestDispatched": false,
+        "error": {
+          "code": 1480,
+          "type": "invalidConfigurationURL",
+          "message": "VGS configuration URL is not valid"
+        }
+      },
+      {
+        "requestDispatched": false,
+        "error": {
+          "code": 1480,
+          "type": "invalidConfigurationURL",
+          "message": "VGS configuration URL is not valid"
+        }
+      }
+    ]
+  }
+}

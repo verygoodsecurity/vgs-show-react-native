@@ -1,0 +1,21 @@
+{
+  "id": "SDK-PDF-005",
+  "description": "The PDF-view model's failure path fires the error callback when decoding fails.",
+  "input": {
+    "operation": "simulatePdfDocumentErrorCallback",
+    "error": {
+      "code": 1405,
+      "type": "invalidBase64Data",
+      "message": "Payload is not valid base64 data"
+    }
+  },
+  "expected": {
+    "outcome": "success",
+    "callbackFired": true,
+    "error": {
+      "code": 1405,
+      "type": "invalidBase64Data",
+      "message": "Payload is not valid base64 data"
+    }
+  }
+}

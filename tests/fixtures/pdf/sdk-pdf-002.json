@@ -1,0 +1,21 @@
+{
+  "id": "SDK-PDF-002",
+  "description": "Setting `pdfFormat` to `.rawData(.base64)` updates the PDF view's decoding mode to the base64 raw-data variant used for PDF reveal.",
+  "input": {
+    "operation": "setPdfFormatAndReadDecodingMode",
+    "pdfFormat": {
+      "kind": "rawData",
+      "encoding": "base64"
+    }
+  },
+  "expected": {
+    "outcome": "success",
+    "decodingContentMode": {
+      "kind": "pdf",
+      "pdfFormat": {
+        "kind": "rawData",
+        "encoding": "base64"
+      }
+    }
+  }
+}

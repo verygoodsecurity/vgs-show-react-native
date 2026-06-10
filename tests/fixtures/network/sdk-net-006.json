@@ -1,0 +1,16 @@
+{
+  "id": "SDK-NET-006",
+  "description": "Encoding a valid JSON dictionary as a JSON request body succeeds; the encoded bytes round-trip to the original dictionary.",
+  "input": {
+    "operation": "encodeJsonPayload",
+    "payload": {
+      "key": "value"
+    }
+  },
+  "expected": {
+    "outcome": "success",
+    "roundTripsTo": {
+      "key": "value"
+    }
+  }
+}

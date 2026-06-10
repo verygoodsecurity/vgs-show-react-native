@@ -1,0 +1,66 @@
+{
+  "id": "SDK-NET-027",
+  "description": "Only HTTP statuses in 200...299 resolve successfully; all other HTTP statuses reject.",
+  "input": {
+    "operation": "simulateRequestOutcome",
+    "cases": [
+      {
+        "response": {
+          "kind": "http",
+          "status": 199
+        }
+      },
+      {
+        "response": {
+          "kind": "http",
+          "status": 200
+        }
+      },
+      {
+        "response": {
+          "kind": "http",
+          "status": 299
+        }
+      },
+      {
+        "response": {
+          "kind": "http",
+          "status": 300
+        }
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "mixed",
+    "perCase": [
+      {
+        "promiseState": "rejected",
+        "error": {
+          "code": 1400,
+          "type": "unexpectedResponseType",
+          "message": "Unexpected response type"
+        }
+      },
+      {
+        "promiseState": "resolved",
+        "value": {
+          "code": 200
+        }
+      },
+      {
+        "promiseState": "resolved",
+        "value": {
+          "code": 299
+        }
+      },
+      {
+        "promiseState": "rejected",
+        "error": {
+          "code": 1400,
+          "type": "unexpectedResponseType",
+          "message": "Unexpected response type"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "id": "SDK-NET-029",
+  "description": "Network errors preserve a numeric platform-like code when available and use -1 as the RN fallback code otherwise.",
+  "input": {
+    "operation": "mapNetworkErrorCode",
+    "cases": [
+      {
+        "error": {
+          "code": -1009,
+          "message": "offline"
+        }
+      },
+      {
+        "error": {
+          "message": "failed"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "success",
+    "perCase": [
+      {
+        "code": -1009
+      },
+      {
+        "code": -1
+      }
+    ]
+  }
+}

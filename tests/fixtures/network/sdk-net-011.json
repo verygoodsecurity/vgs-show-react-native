@@ -1,0 +1,13 @@
+{
+  "id": "SDK-NET-011",
+  "description": "Custom-hostname resolver, given an empty hostname, resolves to null (no HTTP request is issued; the caller falls back to the vault URL).",
+  "input": {
+    "operation": "validateCustomHostname",
+    "hostname": "",
+    "tenantId": "tenant123"
+  },
+  "expected": {
+    "outcome": "resolvesTo",
+    "resolved": null
+  }
+}
