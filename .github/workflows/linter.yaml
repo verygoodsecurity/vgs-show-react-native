@@ -1,0 +1,19 @@
+---
+name: linter
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Yaml
+        run: |
+          yamllint --version
+          yamllint .
