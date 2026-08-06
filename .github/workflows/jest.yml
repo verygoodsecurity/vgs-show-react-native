@@ -12,9 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020  # v4
         with:
           node-version: 20.19.0
           cache: npm
@@ -38,7 +38,7 @@ jobs:
       artifact_name: ${{ steps.artifact.outputs.artifact_name }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4
       - name: Validate VAULT_ID Secret
         shell: bash
         run: |
@@ -48,7 +48,7 @@ jobs:
             exit 1
           fi
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020  # v4
         with:
           node-version: 20.19.0
           cache: npm
@@ -59,7 +59,7 @@ jobs:
       - name: Install example dependencies
         run: npm ci --prefix example
       - name: Setup Xcode 26.2
-        uses: maxim-lobanov/setup-xcode@v1
+        uses: maxim-lobanov/setup-xcode@ed7a3b1fda3918c0306d1b724322adc0b8cc0a90  # v1
         with:
           xcode-version: "26.2"
       - name: Generate iOS Native Project
@@ -137,7 +137,7 @@ jobs:
         run: |
           echo "artifact_name=ios-app-${{ steps.meta.outputs.build_slug }}-${{ github.run_id }}-${{ github.run_attempt }}" >> "$GITHUB_OUTPUT"
       - name: Upload Built iOS App Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
         with:
           name: ${{ steps.artifact.outputs.artifact_name }}
           path: ${{ env.ARCHIVE_PATH }}
@@ -157,18 +157,31 @@ jobs:
       IOS_BUILD_ARTIFACT_NAME: ${{ needs.resolve_ios_build_meta.outputs.artifact_name }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4
       - name: Setup Xcode 26.2
-        uses: maxim-lobanov/setup-xcode@v1
+        uses: maxim-lobanov/setup-xcode@ed7a3b1fda3918c0306d1b724322adc0b8cc0a90  # v1
         with:
           xcode-version: "26.2"
       - name: Install Maestro CLI
+        shell: bash
         run: |
-          curl -Ls "https://get.maestro.mobile.dev" | bash
+          set -euo pipefail
+          MAESTRO_VERSION="2.8.0"
+          MAESTRO_SHA256="b3e561161904fb391875ca5834d5b22cf0b01c052dd1b408ad83e30d8f8951b3"
+          MAESTRO_ARCHIVE="$RUNNER_TEMP/maestro.zip"
+          MAESTRO_EXTRACT_DIR="$RUNNER_TEMP/maestro-extract"
+
+          curl --fail --location --silent --show-error \
+            "https://github.com/mobile-dev-inc/maestro/releases/download/cli-${MAESTRO_VERSION}/maestro.zip" \
+            --output "$MAESTRO_ARCHIVE"
+          printf '%s  %s\n' "$MAESTRO_SHA256" "$MAESTRO_ARCHIVE" | shasum -a 256 --check
+          mkdir -p "$MAESTRO_EXTRACT_DIR" "$HOME/.maestro"
+          unzip -q "$MAESTRO_ARCHIVE" -d "$MAESTRO_EXTRACT_DIR"
+          cp -R "$MAESTRO_EXTRACT_DIR/maestro/." "$HOME/.maestro/"
           echo "PATH=$HOME/.maestro/bin:$PATH" >> "$GITHUB_ENV"
           echo "MAESTRO_DRIVER_STARTUP_TIMEOUT=180000" >> "$GITHUB_ENV"
       - name: Download Built iOS App Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093  # v4
         with:
           name: ${{ env.IOS_BUILD_ARTIFACT_NAME }}
           path: ${{ runner.temp }}/ios-build-artifact
@@ -308,7 +321,7 @@ jobs:
         run: maestro test example/.maestro
       - name: Upload Maestro Artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
         with:
           name: maestro-screenshots-${{ needs.resolve_ios_build_meta.outputs.build_slug }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: ~/.maestro/tests/
