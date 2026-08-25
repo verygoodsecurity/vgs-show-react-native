@@ -398,6 +398,14 @@ headers, or revealed component content while handling errors.
 - Treat `contentPath` as field metadata. It should identify the response field,
   not contain sensitive values.
 
+## SDK Analytics
+
+The SDK sends operational telemetry to VGS to monitor reveal reliability. This
+includes the vault tenant identifier, environment, random form and session IDs,
+SDK and OS versions, event status, field category, `contentPath`, copy format,
+and safe failure details. It never includes revealed values, request or response
+bodies, custom headers, authorization values, hashes, lengths, or media content.
+
 ## Example App
 
 You can check the example application at `example/src/App.tsx`.

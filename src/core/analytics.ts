@@ -1,7 +1,9 @@
+import { Platform } from "react-native";
 import {
   DEFAULT_VGS_SHOW_SDK_VERSION,
   VGS_CLIENT_SOURCE
 } from "./network.js";
+import { dispatchAnalyticsRequest } from "./analyticsTransport.js";
 
 /**
  * Analytics event names emitted by the SDK.
@@ -56,6 +58,13 @@ export type VGSAnalyticsUserAgent = {
   dependencyManager: string;
 };
 
+/** Bounded form metadata used to group SDK telemetry. */
+export type VGSAnalyticsFormContext = {
+  formId: string;
+  tnt: string;
+  env: string;
+};
+
 /**
  * Analytics payload sent through the internal analytics client.
  */
@@ -67,6 +76,9 @@ export type VGSAnalyticsPayload = {
   source: typeof VGS_CLIENT_SOURCE;
   localTimestamp: string;
   vgsShowSessionId: string;
+  formId?: string;
+  tnt?: string;
+  env?: string;
   extraInfo?: Record<string, unknown>;
 };
 
@@ -98,10 +110,10 @@ export const VGSAnalyticsEvents = {
 >;
 
 const DEFAULT_USER_AGENT: VGSAnalyticsUserAgent = {
-  platform: "react-native",
+  platform: Platform.OS,
   device: "unknown",
   deviceModel: "unknown",
-  osVersion: "unknown",
+  osVersion: String(Platform.Version ?? "unknown"),
   deviceLocale: "en-US",
   dependencyManager: "none"
 };
@@ -224,7 +236,8 @@ function createBasePayload(
   type: VGSAnalyticsEventType,
   status: VGSAnalyticsStatus,
   sessionId: string,
-  extraInfo?: Record<string, unknown>
+  extraInfo?: Record<string, unknown>,
+  formContext?: VGSAnalyticsFormContext
 ): VGSAnalyticsPayload {
   const sanitizedExtraInfo = extraInfo === undefined ? undefined : sanitizeExtraInfoRecord(extraInfo);
   assertAllowedExtraInfoKeys(type, sanitizedExtraInfo);
@@ -238,7 +251,44 @@ function createBasePayload(
     source: VGS_CLIENT_SOURCE,
     localTimestamp: new Date().toISOString(),
     vgsShowSessionId: sessionId,
+    ...(formContext === undefined ? {} : formContext),
     ...(sanitizedExtraInfo === undefined ? {} : { extraInfo: sanitizedExtraInfo })
+  };
+}
+
+function wireStatusFor(payload: VGSAnalyticsPayload): "Ok" | "Failed" | "Clicked" {
+  if (payload.type === VGSAnalyticsEvents.copy) {
+    return "Clicked";
+  }
+
+  return payload.status === "success" ? "Ok" : "Failed";
+}
+
+/** Converts the internal logical payload into Keeper's established wire shape. */
+export function buildAnalyticsWirePayload(
+  payload: VGSAnalyticsPayload
+): Record<string, unknown> {
+  const timestamp = Date.parse(payload.localTimestamp);
+  const extraInfo = { ...(payload.extraInfo ?? {}) };
+  const code = extraInfo.code;
+  const message = extraInfo.message;
+  delete extraInfo.code;
+  delete extraInfo.message;
+
+  return {
+    type: payload.type,
+    status: wireStatusFor(payload),
+    ua: { ...payload.ua },
+    version: payload.version,
+    source: payload.source,
+    localTimestamp: Number.isFinite(timestamp) ? timestamp : Date.now(),
+    vgsShowSessionId: payload.vgsShowSessionId,
+    ...(payload.formId === undefined ? {} : { formId: payload.formId }),
+    ...(payload.tnt === undefined ? {} : { tnt: payload.tnt }),
+    ...(payload.env === undefined ? {} : { env: payload.env }),
+    ...extraInfo,
+    ...(typeof code === "number" ? { statusCode: code } : {}),
+    ...(typeof message === "string" ? { error: message } : {})
   };
 }
 
@@ -318,16 +368,20 @@ export class VGSLogger {
 }
 
 /**
- * Internal analytics client with field-level payload validation.
+ * Internal analytics client with bounded operational payload validation.
  */
 export class VGSAnalyticsClient {
   public static readonly shared = new VGSAnalyticsClient();
 
   /** Controls whether analytics events are collected for the current runtime. */
   public shouldCollectAnalytics = true;
-  private sentPayloads: VGSAnalyticsPayload[] = [];
+  private capturedPayloads: VGSAnalyticsPayload[] | null = null;
 
-  public trackFieldInit(input: { contentPath: string; field: VGSAnalyticsField }): VGSAnalyticsPayload | null {
+  public trackFieldInit(input: {
+    contentPath: string;
+    field: VGSAnalyticsField;
+    form?: VGSAnalyticsFormContext;
+  }): VGSAnalyticsPayload | null {
     return this.dispatch(
       createBasePayload(
         VGSAnalyticsEvents.fieldInit,
@@ -336,12 +390,17 @@ export class VGSAnalyticsClient {
         {
           contentPath: input.contentPath,
           field: input.field
-        }
+        },
+        input.form
       )
     );
   }
 
-  public trackFieldUnsubscibe(input: { contentPath: string; field: VGSAnalyticsField }): VGSAnalyticsPayload | null {
+  public trackFieldUnsubscibe(input: {
+    contentPath: string;
+    field: VGSAnalyticsField;
+    form?: VGSAnalyticsFormContext;
+  }): VGSAnalyticsPayload | null {
     return this.dispatch(
       createBasePayload(
         VGSAnalyticsEvents.fieldUnsubscibe,
@@ -350,7 +409,8 @@ export class VGSAnalyticsClient {
         {
           contentPath: input.contentPath,
           field: input.field
-        }
+        },
+        input.form
       )
     );
   }
@@ -400,6 +460,7 @@ export class VGSAnalyticsClient {
   public trackBeforeSubmit(input: {
     content: readonly ("custom_data" | "custom_header" | "custom_hostname")[];
     field: readonly VGSAnalyticsField[];
+    form?: VGSAnalyticsFormContext;
   }): VGSAnalyticsPayload | null {
     return this.dispatch(
       createBasePayload(
@@ -409,7 +470,8 @@ export class VGSAnalyticsClient {
         {
           ...(input.content.length === 0 ? {} : { content: [...input.content] }),
           field: [...input.field]
-        }
+        },
+        input.form
       )
     );
   }
@@ -418,6 +480,7 @@ export class VGSAnalyticsClient {
     status: VGSAnalyticsStatus;
     code?: number;
     message?: string;
+    form?: VGSAnalyticsFormContext;
   }): VGSAnalyticsPayload | null {
     const extraInfo =
       input.status === "failed"
@@ -432,7 +495,8 @@ export class VGSAnalyticsClient {
         VGSAnalyticsEvents.submit,
         input.status,
         VGSShowAnalyticsSession.shared.sessionId,
-        extraInfo
+        extraInfo,
+        input.form
       )
     );
   }
@@ -446,22 +510,24 @@ export class VGSAnalyticsClient {
     type: VGSAnalyticsEventType;
     status: VGSAnalyticsStatus;
     extraInfo?: Record<string, unknown>;
+    form?: VGSAnalyticsFormContext;
   }): VGSAnalyticsPayload {
     return createBasePayload(
       input.type,
       input.status,
       VGSShowAnalyticsSession.shared.sessionId,
-      input.extraInfo
+      input.extraInfo,
+      input.form
     );
   }
 
   public __unstable__getSentPayloadsForTesting(): readonly VGSAnalyticsPayload[] {
-    return [...this.sentPayloads];
+    return [...(this.capturedPayloads ?? [])];
   }
 
   public __unstable__resetForTesting(): void {
     this.shouldCollectAnalytics = true;
-    this.sentPayloads = [];
+    this.capturedPayloads = [];
   }
 
   private dispatch(payload: VGSAnalyticsPayload): VGSAnalyticsPayload | null {
@@ -469,7 +535,14 @@ export class VGSAnalyticsClient {
       return null;
     }
 
-    this.sentPayloads = [...this.sentPayloads, payload];
+    if (this.capturedPayloads !== null) {
+      this.capturedPayloads = [...this.capturedPayloads, payload];
+    }
+
+    dispatchAnalyticsRequest(
+      buildAnalyticsWirePayload(payload),
+      VGSShowAnalyticsSession.shared.sessionId
+    );
     return payload;
   }
 }
@@ -477,9 +550,14 @@ export class VGSAnalyticsClient {
 /**
  * Returns the analytics state that should be encoded into request headers.
  */
-export function analyticsHeaderState(): { analyticsEnabled: boolean; sessionId: string } {
+export function analyticsHeaderState(): {
+  analyticsEnabled: boolean;
+  sessionId: string;
+  osVersion: string;
+} {
   return {
     analyticsEnabled: VGSAnalyticsClient.shared.shouldCollectAnalytics,
-    sessionId: VGSShowAnalyticsSession.shared.sessionId
+    sessionId: VGSShowAnalyticsSession.shared.sessionId,
+    osVersion: DEFAULT_USER_AGENT.osVersion
   };
 }

@@ -362,9 +362,8 @@ Rules:
 ---
 ## 13. Analytics
 
-SDK analytics are field-level. Allowed metadata includes event type, status, field category (`text`, `image`, `pdf`), `contentPath`, copy format, and failure codes/messages.
-
-Do not add analytics that include revealed values, payload bodies, headers, tokens, hashes, lengths, or base64 content.
+SDK analytics help VGS improve the product. To turn them off, set
+`VGSAnalyticsClient.shared.shouldCollectAnalytics = false`.
 
 ---
 ## 14. Performance & Concurrency

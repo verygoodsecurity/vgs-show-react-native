@@ -290,6 +290,21 @@ function eventViewIdFor(view: VGSShowSubscribableView): string {
   return view.viewId ?? view.kind;
 }
 
+function analyticsFormContext(vgsShow: VGSShow): {
+  formId: string;
+  tnt: string;
+  env: string;
+} {
+  return {
+    formId: vgsShow.formId,
+    tnt: vgsShow.id,
+    env:
+      vgsShow.dataRegion === undefined
+        ? vgsShow.environment
+        : `${vgsShow.environment}-${vgsShow.dataRegion}`
+  };
+}
+
 function getRuntimeFetch(): RuntimeFetch {
   const runtime = globalThis as { fetch?: unknown };
   if (typeof runtime.fetch !== "function") {
@@ -378,7 +393,8 @@ export function subscribeVGSShowView(vgsShow: VGSShow, view: VGSShowSubscribable
   });
   VGSAnalyticsClient.shared.trackFieldInit({
     contentPath: view.contentPath ?? "",
-    field: viewKindToAnalyticsField(view.kind)
+    field: viewKindToAnalyticsField(view.kind),
+    form: analyticsFormContext(vgsShow)
   });
 }
 
@@ -427,7 +443,8 @@ export function buildVGSShowRequestForTesting(
     request: input,
     customHeaders: vgsShow.customHeaders,
     analyticsEnabled: headerState.analyticsEnabled,
-    sessionId: headerState.sessionId
+    sessionId: headerState.sessionId,
+    osVersion: headerState.osVersion
   });
 
   return builtRequest;
@@ -484,7 +501,8 @@ export function simulateVGSShowRequestForTesting(
       ...(Object.keys(vgsShow.customHeaders).length > 0 ? ["custom_header"] as const : []),
       ...(vgsShow.hostname !== undefined ? ["custom_hostname"] as const : [])
     ],
-    field: subscribersSnapshot.map((view) => viewKindToAnalyticsField(view.kind))
+    field: subscribersSnapshot.map((view) => viewKindToAnalyticsField(view.kind)),
+    form: analyticsFormContext(vgsShow)
   });
 
   if (subscribersSnapshot.length === 0) {
@@ -531,7 +549,8 @@ export function simulateVGSShowRequestForTesting(
     VGSAnalyticsClient.shared.trackSubmit({
       status: "failed",
       ...(typeof analyticsFailureCode === "number" ? { code: analyticsFailureCode } : {}),
-      message: requestOutcome.error.message
+      message: requestOutcome.error.message,
+      form: analyticsFormContext(vgsShow)
     });
     return {
       outcome: "failure",
@@ -559,7 +578,8 @@ export function simulateVGSShowRequestForTesting(
     VGSAnalyticsClient.shared.trackSubmit({
       status: "failed",
       code: rawDecode.error.code,
-      message: rawDecode.error.message
+      message: rawDecode.error.message,
+      form: analyticsFormContext(vgsShow)
     });
     return {
       outcome: "failure",
@@ -624,7 +644,8 @@ export function simulateVGSShowRequestForTesting(
     code: requestOutcome.value.code
   });
   VGSAnalyticsClient.shared.trackSubmit({
-    status: "success"
+    status: "success",
+    form: analyticsFormContext(vgsShow)
   });
 
   return {
@@ -649,7 +670,8 @@ function recordUnsubscribe(vgsShow: VGSShow, view: VGSShowSubscribableView): voi
   });
   VGSAnalyticsClient.shared.trackFieldUnsubscibe({
     contentPath: view.contentPath ?? "",
-    field: viewKindToAnalyticsField(view.kind)
+    field: viewKindToAnalyticsField(view.kind),
+    form: analyticsFormContext(vgsShow)
   });
 }
 
@@ -700,7 +722,8 @@ function buildRejectedTrace(
   VGSAnalyticsClient.shared.trackSubmit({
     status: "failed",
     code: input.error.code,
-    message: input.error.message
+    message: input.error.message,
+    form: analyticsFormContext(vgsShow)
   });
 
   return {
@@ -725,7 +748,8 @@ function recordSubmitFailure(vgsShow: VGSShow, error: VGSShowError): void {
   VGSAnalyticsClient.shared.trackSubmit({
     status: "failed",
     code: error.code,
-    message: error.message
+    message: error.message,
+    form: analyticsFormContext(vgsShow)
   });
 }
 
@@ -740,7 +764,8 @@ function recordTransportFailure(vgsShow: VGSShow, error: VGSShowError): void {
   VGSAnalyticsClient.shared.trackSubmit({
     status: "failed",
     ...(typeof analyticsFailureCode === "number" ? { code: analyticsFailureCode } : {}),
-    message: error.message
+    message: error.message,
+    form: analyticsFormContext(vgsShow)
   });
 }
 
@@ -852,7 +877,8 @@ export class VGSShow {
         ...(Object.keys(this.customHeaders).length > 0 ? ["custom_header"] as const : []),
         ...(this.hostname !== undefined ? ["custom_hostname"] as const : [])
       ],
-      field: subscribersSnapshot.map((view) => viewKindToAnalyticsField(view.kind))
+      field: subscribersSnapshot.map((view) => viewKindToAnalyticsField(view.kind)),
+      form: analyticsFormContext(this)
     });
 
     if (subscribersSnapshot.length === 0) {
@@ -872,7 +898,8 @@ export class VGSShow {
       request: input,
       customHeaders: this.customHeaders,
       analyticsEnabled: headerState.analyticsEnabled,
-      sessionId: headerState.sessionId
+      sessionId: headerState.sessionId,
+      osVersion: headerState.osVersion
     });
 
     if (builtRequest instanceof VGSShowError) {
@@ -930,7 +957,8 @@ export class VGSShow {
       code: response.status
     });
     VGSAnalyticsClient.shared.trackSubmit({
-      status: "success"
+      status: "success",
+      form: analyticsFormContext(this)
     });
 
     return {

@@ -28,8 +28,8 @@ export const SHOW_PDF_DEMO_TITLE = "Reveal PDF";
 export const DEMO_DEFAULT_PDF_ALIAS = "pdf-alias";
 
 // Payload field and contentPath are the integration contract with the vault route.
-const PDF_ALIAS_PAYLOAD_FIELD = "pdf_alias";
-const PDF_CONTENT_PATH = "json.secure_pdf";
+const PDF_ALIAS_PAYLOAD_FIELD = "pdf_file";
+const PDF_CONTENT_PATH = "json.pdf_file";
 
 export function ShowPdfDemoScreen(props: {
   readonly vgsShow: VGSShow;

@@ -1,5 +1,6 @@
 export const Platform = {
-  OS: "ios"
+  OS: "ios",
+  Version: "18.0"
 };
 
 export function Image() {

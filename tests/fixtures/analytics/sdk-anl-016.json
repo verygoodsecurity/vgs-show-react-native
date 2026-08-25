@@ -1,0 +1,33 @@
+{
+  "id": "SDK-ANL-016",
+  "description": "Analytics dispatch sends one Unicode-safe base64 event to Keeper with the established headers and session correlation.",
+  "input": {
+    "operation": "dispatchAnalyticsTransportRequest",
+    "code": 1400,
+    "message": "Synthetic échec",
+    "form": {
+      "formId": "00000000-0000-4000-8000-000000000002",
+      "tnt": "tntsynthetic",
+      "env": "sandbox"
+    }
+  },
+  "expected": {
+    "outcome": "success",
+    "requestCaptured": true,
+    "url": "https://vgs-collect-keeper.apps.verygood.systems/vgs",
+    "method": "POST",
+    "contentType": "application/x-www-form-urlencoded",
+    "sessionHeaderMatchesBody": true,
+    "body": {
+      "type": "Submit",
+      "status": "Failed",
+      "source": "show-rnSDK",
+      "formId": "00000000-0000-4000-8000-000000000002",
+      "tnt": "tntsynthetic",
+      "env": "sandbox",
+      "statusCode": 1400,
+      "error": "Synthetic échec",
+      "hasUa": true
+    }
+  }
+}

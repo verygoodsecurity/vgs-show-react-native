@@ -19,6 +19,7 @@ import * as contentState from "../../lib/core/contentState.js";
 import * as network from "../../lib/core/network.js";
 import * as textPipeline from "../../lib/core/textPipeline.js";
 import * as analytics from "../../lib/core/analytics.js";
+import * as analyticsTransport from "../../lib/core/analyticsTransport.js";
 import * as components from "../../lib/components/index.js";
 
 function subscribeView(vgsShow, view) {
@@ -2076,6 +2077,7 @@ function buildPdfDocumentErrorCallbackResult(fixture) {
 }
 
 function resetAnalyticsTestingState() {
+  analyticsTransport.__unstable__setAnalyticsFetchForTesting(() => Promise.resolve({}));
   analytics.VGSAnalyticsClient.shared.__unstable__resetForTesting();
   analytics.VGSLogger.shared.__unstable__resetForTesting();
 }
@@ -2102,8 +2104,8 @@ function buildAnalyticsSessionRuntimeResult(fixture) {
     sharedAcrossInstances:
       !(firstRequest instanceof VGSShowError) &&
       !(secondRequest instanceof VGSShowError) &&
-      firstRequest.headers["vgs-client"].includes(`sessionId=${firstSessionId}`) &&
-      secondRequest.headers["vgs-client"].includes(`sessionId=${firstSessionId}`),
+      firstRequest.headers["vgs-client"].includes(`vgsShowSessionId=${firstSessionId}`) &&
+      secondRequest.headers["vgs-client"].includes(`vgsShowSessionId=${firstSessionId}`),
     payloadSessionMatchesRuntime: firstPayload?.vgsShowSessionId === firstSessionId
   };
 
@@ -2140,7 +2142,7 @@ function buildAnalyticsBasePayloadResult(fixture) {
     uaKeys: Object.keys(payload.ua).sort(),
     sessionIdMatchesHeader:
       !(request instanceof VGSShowError) &&
-      request.headers["vgs-client"].includes(`sessionId=${payload.vgsShowSessionId}`),
+      request.headers["vgs-client"].includes(`vgsShowSessionId=${payload.vgsShowSessionId}`),
     headerSourceMatchesPayload:
       !(request instanceof VGSShowError) &&
       request.headers["vgs-client"].includes(`source=${payload.source}`)
@@ -2312,6 +2314,11 @@ function buildAnalyticsRedactionResult(fixture) {
 
 function buildAnalyticsOptOutResult(fixture) {
   resetAnalyticsTestingState();
+  let analyticsRequestCount = 0;
+  analyticsTransport.__unstable__setAnalyticsFetchForTesting(() => {
+    analyticsRequestCount += 1;
+    return Promise.resolve({});
+  });
   analytics.VGSAnalyticsClient.shared.shouldCollectAnalytics = false;
   const vgsShow = new VGSShow({ id: "tenant" });
   subscribeView(vgsShow, {
@@ -2324,11 +2331,121 @@ function buildAnalyticsOptOutResult(fixture) {
   const actual = {
     outcome: "success",
     sentPayloadCount: analytics.VGSAnalyticsClient.shared.__unstable__getSentPayloadsForTesting().length,
+    analyticsRequestCount,
     headerAnalyticsEnabledFalse:
-      !(request instanceof VGSShowError) && request.headers["vgs-client"].includes("analytics=false")
+      !(request instanceof VGSShowError) && request.headers["vgs-client"].includes("tr=none")
   };
   analytics.VGSAnalyticsClient.shared.__unstable__resetForTesting();
 
+  return buildAssertionResult({ fixture, actual, stateSequence: [actual] });
+}
+
+function buildAnalyticsFailureNoninterferenceResult(fixture) {
+  resetAnalyticsTestingState();
+  const perCase = fixture.input.failureModes.map((failureMode) => {
+    analyticsTransport.__unstable__setAnalyticsFetchForTesting(() => {
+      if (failureMode === "synchronous") {
+        throw new Error("Synthetic analytics transport failure");
+      }
+
+      return Promise.reject(new Error("Synthetic analytics transport rejection"));
+    });
+
+    let threw = false;
+    try {
+      analytics.VGSAnalyticsClient.shared.trackCopy({ format: "raw" });
+    } catch {
+      threw = true;
+    }
+
+    return { failureMode, revealFlowInterrupted: threw };
+  });
+  const actual = {
+    outcome: "success",
+    perCase
+  };
+
+  analyticsTransport.__unstable__setAnalyticsFetchForTesting(() => Promise.resolve({}));
+  return buildAssertionResult({ fixture, actual, stateSequence: perCase });
+}
+
+function buildAnalyticsWirePayloadResult(fixture) {
+  resetAnalyticsTestingState();
+  const logicalPayload = analytics.VGSAnalyticsClient.shared.buildPayloadForTesting({
+    type: analytics.VGSAnalyticsEvents.submit,
+    status: "failed",
+    extraInfo: {
+      code: fixture.input.code,
+      message: fixture.input.message
+    },
+    form: fixture.input.form
+  });
+  const wirePayload = analytics.buildAnalyticsWirePayload(logicalPayload);
+  const actual = {
+    outcome: "success",
+    type: wirePayload.type,
+    status: wirePayload.status,
+    source: wirePayload.source,
+    version: wirePayload.version,
+    formId: wirePayload.formId,
+    tnt: wirePayload.tnt,
+    env: wirePayload.env,
+    statusCode: wirePayload.statusCode,
+    error: wirePayload.error,
+    localTimestampIsNumber: typeof wirePayload.localTimestamp === "number",
+    extraInfoAbsent: !("extraInfo" in wirePayload),
+    codeAbsent: !("code" in wirePayload),
+    messageAbsent: !("message" in wirePayload)
+  };
+
+  return buildAssertionResult({ fixture, actual, stateSequence: [wirePayload] });
+}
+
+function buildAnalyticsTransportRequestResult(fixture) {
+  resetAnalyticsTestingState();
+  let capturedRequest = null;
+  analyticsTransport.__unstable__setAnalyticsFetchForTesting((url, init) => {
+    capturedRequest = { url, init };
+    return Promise.resolve({});
+  });
+
+  analytics.VGSAnalyticsClient.shared.trackSubmit({
+    status: "failed",
+    code: fixture.input.code,
+    message: fixture.input.message,
+    form: fixture.input.form
+  });
+
+  const decodedBody =
+    capturedRequest === null
+      ? null
+      : JSON.parse(Buffer.from(capturedRequest.init.body, "base64").toString("utf8"));
+  const actual = {
+    outcome: "success",
+    requestCaptured: capturedRequest !== null,
+    url: capturedRequest?.url ?? null,
+    method: capturedRequest?.init.method ?? null,
+    contentType: capturedRequest?.init.headers["Content-Type"] ?? null,
+    sessionHeaderMatchesBody:
+      capturedRequest !== null &&
+      decodedBody !== null &&
+      capturedRequest.init.headers.vgsShowSessionId === decodedBody.vgsShowSessionId,
+    body: decodedBody === null
+      ? null
+      : {
+          type: decodedBody.type,
+          status: decodedBody.status,
+          source: decodedBody.source,
+          formId: decodedBody.formId,
+          tnt: decodedBody.tnt,
+          env: decodedBody.env,
+          statusCode: decodedBody.statusCode,
+          error: decodedBody.error,
+          hasUa: typeof decodedBody.ua === "object" && decodedBody.ua !== null
+        }
+  };
+
+  analyticsTransport.__unstable__setAnalyticsFetchForTesting(() => Promise.resolve({}));
   return buildAssertionResult({ fixture, actual, stateSequence: [actual] });
 }
 
@@ -2628,6 +2745,12 @@ export function executeSdkBehaviorCase(fixture) {
       return buildAnalyticsRedactionResult(fixture);
     case "simulateAnalyticsOptOut":
       return buildAnalyticsOptOutResult(fixture);
+    case "buildAnalyticsWirePayload":
+      return buildAnalyticsWirePayloadResult(fixture);
+    case "dispatchAnalyticsTransportRequest":
+      return buildAnalyticsTransportRequestResult(fixture);
+    case "simulateAnalyticsFailureNoninterference":
+      return buildAnalyticsFailureNoninterferenceResult(fixture);
     case "inspectNetworkDebugLogging":
       return buildNetworkDebugLoggingResult(fixture);
     case "inspectLoggerDefaults":

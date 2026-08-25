@@ -1,0 +1,21 @@
+{
+  "id": "SDK-ANL-017",
+  "description": "Analytics transport failures never interrupt the reveal flow.",
+  "input": {
+    "operation": "simulateAnalyticsFailureNoninterference",
+    "failureModes": ["synchronous", "asynchronous"]
+  },
+  "expected": {
+    "outcome": "success",
+    "perCase": [
+      {
+        "failureMode": "synchronous",
+        "revealFlowInterrupted": false
+      },
+      {
+        "failureMode": "asynchronous",
+        "revealFlowInterrupted": false
+      }
+    ]
+  }
+}

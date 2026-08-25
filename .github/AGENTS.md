@@ -94,8 +94,9 @@ example workspace. Build and test the SDK from the repository root. Use
   when those values are synthetic in tests.
 - Never add console logging of request/response bodies, custom headers, payloads,
   or revealed component content.
-- Keep analytics field-level only. `contentPath` and logical field names are
-  allowed; values and payload bodies are not.
+- Keep analytics limited to bounded operational metadata. Vault tenant ID,
+  environment, random form/session IDs, `contentPath`, and logical field names
+  are allowed; end-customer identifiers, values, and payload bodies are not.
 - Treat network debug logging as unsafe for production. Do not broaden it, enable
   it by default, or document it as safe for customer apps.
 - Error objects may include codes, types, domains, and safe diagnostic context.

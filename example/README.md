@@ -90,5 +90,5 @@ Image contract:
 
 PDF contract:
 
-- request payload key: `pdf_alias`
-- reveal content path: `json.secure_pdf`
+- request payload key: `pdf_file`
+- reveal content path: `json.pdf_file`

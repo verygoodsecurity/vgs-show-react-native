@@ -1,12 +1,13 @@
 {
   "id": "SDK-ANL-012",
-  "description": "Analytics opt-out suppresses analytics payload dispatch and flips the outgoing vgs-client header analytics flag to false.",
+  "description": "Analytics opt-out suppresses analytics payload dispatch and sets the outgoing vgs-client tracking status to none.",
   "input": {
     "operation": "simulateAnalyticsOptOut"
   },
   "expected": {
     "outcome": "success",
     "sentPayloadCount": 0,
+    "analyticsRequestCount": 0,
     "headerAnalyticsEnabledFalse": true
   }
 }

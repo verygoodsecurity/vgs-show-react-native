@@ -85,6 +85,7 @@ export type RequestBuildInput = {
   sessionId?: string;
   sdkVersion?: string;
   platform?: string;
+  osVersion?: string;
 };
 
 /**
@@ -141,6 +142,7 @@ type VgsClientHeaderOptions = {
   platform?: string;
   analyticsEnabled?: boolean;
   sessionId?: string;
+  osVersion?: string;
 };
 
 const METHOD_SET = new Set<VGSHTTPMethod>(["GET", "POST", "PUT", "PATCH", "DELETE"]);
@@ -336,17 +338,18 @@ export function resolveCustomHostnameResult(hostname: string, responseBody: stri
  */
 export function buildVgsClientHeader(options: VgsClientHeaderOptions = {}): string {
   const sdkVersion = options.sdkVersion ?? DEFAULT_VGS_SHOW_SDK_VERSION;
-  const platform = options.platform ?? "react-native";
+  const osVersion = options.osVersion ?? "unknown";
   const analyticsEnabled = options.analyticsEnabled ?? true;
   const sessionId = options.sessionId ?? "session";
 
   return [
     `source=${VGS_CLIENT_SOURCE}`,
-    `sdkVersion=${sdkVersion}`,
-    `platform=${platform}`,
-    `analytics=${analyticsEnabled}`,
-    `sessionId=${sessionId}`
-  ].join("; ");
+    "medium=vgs-show",
+    `content=${sdkVersion}`,
+    `osVersion=${osVersion}`,
+    `vgsShowSessionId=${sessionId}`,
+    `tr=${analyticsEnabled ? "default" : "none"}`
+  ].join("&");
 }
 
 /**
@@ -412,6 +415,9 @@ export function buildRequest(input: RequestBuildInput): BuiltRequest | VGSShowEr
   }
   if (input.platform !== undefined) {
     headerOptions.platform = input.platform;
+  }
+  if (input.osVersion !== undefined) {
+    headerOptions.osVersion = input.osVersion;
   }
 
   const headers = mergeHeaders(

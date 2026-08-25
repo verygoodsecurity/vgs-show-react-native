@@ -1,0 +1,30 @@
+{
+  "id": "SDK-ANL-015",
+  "description": "Keeper wire payloads use iOS-compatible statuses, flatten safe metadata, and include bounded form context.",
+  "input": {
+    "operation": "buildAnalyticsWirePayload",
+    "code": 1400,
+    "message": "Synthetic failure",
+    "form": {
+      "formId": "00000000-0000-4000-8000-000000000001",
+      "tnt": "tntsynthetic",
+      "env": "sandbox"
+    }
+  },
+  "expected": {
+    "outcome": "success",
+    "type": "Submit",
+    "status": "Failed",
+    "source": "show-rnSDK",
+    "version": "1.0.0",
+    "formId": "00000000-0000-4000-8000-000000000001",
+    "tnt": "tntsynthetic",
+    "env": "sandbox",
+    "statusCode": 1400,
+    "error": "Synthetic failure",
+    "localTimestampIsNumber": true,
+    "extraInfoAbsent": true,
+    "codeAbsent": true,
+    "messageAbsent": true
+  }
+}
