@@ -1,11 +1,11 @@
 # AGENTS.md
 
-**SDK Version: 1.1.0**
+**SDK Version: 1.0.1**
 
 Authoritative integration guide for autonomous engineering agents adding **VGS Show React Native SDK (`@vgs/show-react-native`)** to downstream React Native apps to reveal previously tokenized or aliased data (text, images, PDFs) securely.
 
 Documentation Source of Truth Across Versions
-- The canonical durable instruction source for this repository lives at `skills/vgs-show-react-native-guide/references/AGENTS.md`.
+- The canonical durable instruction source for this public integration skill lives at `skills/vgs-show-react-native-guide/references/AGENTS.md`.
 - The single public AI skill entrypoint lives at `skills/vgs-show-react-native-guide/SKILL.md`. It routes task type and version selection, then defers SDK rules and invariants to this file.
 - The installed skill bundle must ship `skills/vgs-show-react-native-guide/references/AGENTS.md` so standalone skill installs receive this policy file automatically.
 - For the public skill and public documentation workflows, the canonical repository for tags and versioned docs is `https://github.com/verygoodsecurity/vgs-show-react-native`.
@@ -13,7 +13,6 @@ Documentation Source of Truth Across Versions
 - If an exact tag is unavailable, agents MUST use the nearest compatible tag and clearly disclose the mismatch before giving version-sensitive guidance.
 - Private forks or internal mirrors do not override the public repository as the source of truth for public skill guidance.
 - If the SDK is not installed or its version cannot be determined, agents SHOULD use the default-branch copy of this file and say that latest guidance is being used.
-- Release tags MUST be created only after `README.md`, `skills/vgs-show-react-native-guide/SKILL.md`, and `skills/vgs-show-react-native-guide/references/AGENTS.md` match the shipped SDK behavior for that release.
 
 Scope & Constraints
 - ONLY covers public, non-deprecated APIs verified in current sources.
@@ -70,7 +69,7 @@ Install the package with the customer's package manager:
 npm install @vgs/show-react-native
 ```
 
-Peer dependency floor for SDK 1.1.0:
+Peer dependency floor for SDK 1.0.1:
 - `react >= 19.1.0`
 - `react-native >= 0.81.4`
 
@@ -175,17 +174,21 @@ const labelRef = React.useRef<VGSShowLabelRef | null>(null);
 Masking and transformation:
 - Use `isSecureText={true}` for full masking.
 - Use `setSecureText({ start, end })` or `setSecureText({ ranges })` for ranges.
+- Masking follows iOS parity: invalid secure ranges are ignored, an empty
+  explicit ranges array masks nothing, and an empty `secureTextSymbol` leaves
+  the transformed display text unmasked.
 - Use `addTransformationRegex(...)` only for display/copy formatting. Do not use it to move revealed text into app state.
 - `copyToClipboard({ format: "raw" })` intentionally copies raw revealed text. Use only when the product requirement and compliance review allow it. Prefer `"transformed"` when possible.
 
 ---
 ## 7. VGSShowImage (Image Reveal)
 
-`VGSShowImage` renders base64 image content selected by `contentPath`.
+`VGSShowImage` renders base64 JPEG and PNG image content selected by `contentPath`.
 
 Capabilities:
 - `contentPath`: required dot-separated response path.
 - `contentMode`: `"scaleToFill"`, `"scaleAspectFit"`, `"scaleAspectFill"`, or `"center"`.
+- `style`: React Native image style applied to the underlying `Image`.
 - `onImageChange`: notification only; base64 is not passed out.
 - `onImageError`: receives `VGSShowError`.
 - Ref state/action: `hasImage`, `clear()`.
@@ -200,13 +203,16 @@ const imageRef = React.useRef<VGSShowImageRef | null>(null);
   vgsShow={vgsShow}
   contentPath="card.image"
   contentMode="scaleAspectFit"
+  style={{ width: "100%", height: 240 }}
   onImageError={() => {
     setStatus("Image unavailable");
   }}
 />;
 ```
 
-Do not expose, log, hash, cache, or forward image base64 from app code.
+Only JPEG and PNG image bytes are supported. Other image formats fail with
+`invalidImageData`. Do not expose, log, hash, cache, or forward image base64
+from app code.
 
 ---
 ## 8. VGSShowPdf (PDF Reveal)
@@ -216,6 +222,7 @@ Do not expose, log, hash, cache, or forward image base64 from app code.
 
 Capabilities:
 - `contentPath`: required dot-separated response path.
+- `style`: React Native view style applied to the underlying PDF renderer. Provide dimensions or flex layout.
 - `pdfDisplayMode`: `"singlePage"`, `"singlePageContinuous"`, `"twoUp"`, or `"twoUpContinuous"`.
 - `pdfDisplayDirection`: `"vertical"` or `"horizontal"`.
 - `pdfAutoScales`, `displayAsBook`, `pageShadowsEnabled`, `pdfBackgroundColor`.
@@ -232,6 +239,7 @@ const pdfRef = React.useRef<VGSShowPdfRef | null>(null);
   ref={pdfRef}
   vgsShow={vgsShow}
   contentPath="card.statement"
+  style={{ width: "100%", height: 360 }}
   pdfDisplayMode="singlePageContinuous"
   pdfDisplayDirection="vertical"
   onDocumentError={() => {
@@ -240,7 +248,9 @@ const pdfRef = React.useRef<VGSShowPdfRef | null>(null);
 />;
 ```
 
-Do not expose, log, hash, cache, or forward PDF base64 from app code.
+Native renderer failures are reported through `onDocumentError` as
+`invalidPDFData`. Do not expose, log, hash, cache, or forward PDF base64 from
+app code.
 
 ---
 ## 9. Making a Reveal Request
@@ -352,9 +362,8 @@ Rules:
 ---
 ## 13. Analytics
 
-SDK analytics are field-level. Allowed metadata includes event type, status, field category (`text`, `image`, `pdf`), `contentPath`, copy format, and failure codes/messages.
-
-Do not add analytics that include revealed values, payload bodies, headers, tokens, hashes, lengths, or base64 content.
+SDK analytics help VGS improve the product. To turn them off, set
+`VGSAnalyticsClient.shared.shouldCollectAnalytics = false`.
 
 ---
 ## 14. Performance & Concurrency
@@ -436,7 +445,7 @@ PDF reveal:
 ```tsx
 import { VGSShowPdf } from "@vgs/show-react-native";
 
-<VGSShowPdf vgsShow={vgsShow} contentPath="docs.statement" />;
+<VGSShowPdf vgsShow={vgsShow} contentPath="docs.statement" style={{ width: "100%", height: 360 }} />;
 ```
 
 Request:

@@ -1,6 +1,6 @@
 # AGENTS.md
 
-**SDK Version: 1.0.0**
+**SDK Version: 1.0.1**
 
 Authoritative integration guide for autonomous engineering agents adding **VGS Show React Native SDK (`@vgs/show-react-native`)** to downstream React Native apps to reveal previously tokenized or aliased data (text, images, PDFs) securely.
 
@@ -69,7 +69,7 @@ Install the package with the customer's package manager:
 npm install @vgs/show-react-native
 ```
 
-Peer dependency floor for SDK 1.0.0:
+Peer dependency floor for SDK 1.0.1:
 - `react >= 19.1.0`
 - `react-native >= 0.81.4`
 
